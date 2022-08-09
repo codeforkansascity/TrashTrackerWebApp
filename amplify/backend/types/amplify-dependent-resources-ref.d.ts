@@ -11,11 +11,6 @@ export type AmplifyDependentResourcesAttributes = {
         }
     },
     "api": {
-        "trashtrackerwebsite": {
-            "GraphQLAPIKeyOutput": "string",
-            "GraphQLAPIIdOutput": "string",
-            "GraphQLAPIEndpointOutput": "string"
-        },
         "trashTrackerRESTApi": {
             "RootUrl": "string",
             "ApiName": "string",
