@@ -1,0 +1,17 @@
+/* NavBar Styling */
+.navbar-brand {
+    font-weight: 700;
+}
+
+.navbar {
+    background-color: #fff;
+}
+
+.nav-item {
+    padding: 0 0.5rem 0;
+}
+
+.user {
+    padding-right: 2.5rem;
+}
+  
