@@ -3,7 +3,7 @@
   "paths": {
     "/trash/{trashId}": {
       "name": "/trash/{trashId}",
-      "lambdaFunction": "trashLambdaFunction",
+      "lambdaFunction": "webappLambda",
       "permissions": {
         "setting": "open"
       }

@@ -1,6 +1,6 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "{\"createdOn\":\"Mac\",\"createdBy\":\"Amplify\",\"createdWith\":\"9.1.0\",\"stackType\":\"function-Lambda\",\"metadata\":{}}",
+  "Description": "{\"createdOn\":\"Mac\",\"createdBy\":\"Amplify\",\"createdWith\":\"9.2.1\",\"stackType\":\"function-Lambda\",\"metadata\":{}}",
   "Parameters": {
     "CloudWatchRule": {
       "Type": "String",
@@ -14,12 +14,6 @@
       "Type": "String"
     },
     "s3Key": {
-      "Type": "String"
-    },
-    "secretsPathAmplifyAppId": {
-      "Type": "String"
-    },
-    "twilioNumber": {
       "Type": "String"
     }
   },
@@ -53,12 +47,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "trashLambdaFunction",
+            "webappLambda",
             {
               "Fn::Join": [
                 "",
                 [
-                  "trashLambdaFunction",
+                  "webappLambda",
                   "-",
                   {
                     "Ref": "env"
@@ -75,31 +69,6 @@
             },
             "REGION": {
               "Ref": "AWS::Region"
-            },
-            "TWILIO_AUTH_TOKEN": {
-              "Fn::Join": [
-                "",
-                [
-                  {
-                    "Fn::Sub": [
-                      "/amplify/${appId}/${env}/AMPLIFY_${functionName}_",
-                      {
-                        "appId": {
-                          "Ref": "secretsPathAmplifyAppId"
-                        },
-                        "env": {
-                          "Ref": "env"
-                        },
-                        "functionName": "trashLambdaFunction"
-                      }
-                    ]
-                  },
-                  "TWILIO_AUTH_TOKEN"
-                ]
-              ]
-            },
-            "TWILIO_NUMBER": {
-              "Ref": "twilioNumber"
             }
           }
         },
@@ -110,9 +79,7 @@
           ]
         },
         "Runtime": "nodejs14.x",
-        "Layers": [
-          "arn:aws:lambda:us-east-2:181724163600:layer:lulu_test_twilioNodeLibrary_3_added_cors:1"
-        ],
+        "Layers": [],
         "Timeout": 25
       }
     },
@@ -122,12 +89,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "trashtrackerwebsiteLambdaRole7b7835f6",
+            "trashtrackerwebappLambdaRoleaa3f23c9",
             {
               "Fn::Join": [
                 "",
                 [
-                  "trashtrackerwebsiteLambdaRole7b7835f6",
+                  "trashtrackerwebappLambdaRoleaa3f23c9",
                   "-",
                   {
                     "Ref": "env"
@@ -197,63 +164,6 @@
           ]
         }
       }
-    },
-    "AmplifyFunctionSecretsPolicy": {
-      "Type": "AWS::IAM::Policy",
-      "Properties": {
-        "PolicyName": "amplify-function-secrets-policy",
-        "Roles": [
-          {
-            "Ref": "LambdaExecutionRole"
-          }
-        ],
-        "PolicyDocument": {
-          "Version": "2012-10-17",
-          "Statement": [
-            {
-              "Effect": "Allow",
-              "Action": [
-                "ssm:GetParameter",
-                "ssm:GetParameters"
-              ],
-              "Resource": {
-                "Fn::Join": [
-                  "",
-                  [
-                    "arn:aws:ssm:",
-                    {
-                      "Ref": "AWS::Region"
-                    },
-                    ":",
-                    {
-                      "Ref": "AWS::AccountId"
-                    },
-                    ":parameter",
-                    {
-                      "Fn::Sub": [
-                        "/amplify/${appId}/${env}/AMPLIFY_${functionName}_",
-                        {
-                          "appId": {
-                            "Ref": "secretsPathAmplifyAppId"
-                          },
-                          "env": {
-                            "Ref": "env"
-                          },
-                          "functionName": "trashLambdaFunction"
-                        }
-                      ]
-                    },
-                    "*"
-                  ]
-                ]
-              }
-            }
-          ]
-        }
-      },
-      "DependsOn": [
-        "LambdaExecutionRole"
-      ]
     }
   },
   "Outputs": {

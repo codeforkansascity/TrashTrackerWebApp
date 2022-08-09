@@ -1,26 +1,24 @@
 {
   "staging": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-amplify41727905d3844-staging-215128-authRole",
-      "UnauthRoleArn": "arn:aws:iam::181724163600:role/amplify-amplify41727905d3844-staging-215128-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::181724163600:role/amplify-amplify41727905d3844-staging-215128-authRole",
+      "AuthRoleName": "amplify-amplify0a8bcab924934-staging-210245-authRole",
+      "UnauthRoleArn": "arn:aws:iam::181724163600:role/amplify-amplify0a8bcab924934-staging-210245-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::181724163600:role/amplify-amplify0a8bcab924934-staging-210245-authRole",
       "Region": "us-east-2",
-      "DeploymentBucketName": "amplify-amplify41727905d3844-staging-215128-deployment",
-      "UnauthRoleName": "amplify-amplify41727905d3844-staging-215128-unauthRole",
-      "StackName": "amplify-amplify41727905d3844-staging-215128",
-      "StackId": "arn:aws:cloudformation:us-east-2:181724163600:stack/amplify-amplify41727905d3844-staging-215128/6f974380-0ebf-11ed-a0f7-06ecea1c63e0",
-      "AmplifyAppId": "d1kfmvyfytx4m7"
+      "DeploymentBucketName": "amplify-amplify0a8bcab924934-staging-210245-deployment",
+      "UnauthRoleName": "amplify-amplify0a8bcab924934-staging-210245-unauthRole",
+      "StackName": "amplify-amplify0a8bcab924934-staging-210245",
+      "StackId": "arn:aws:cloudformation:us-east-2:181724163600:stack/amplify-amplify0a8bcab924934-staging-210245/9e8f03b0-1826-11ed-b12e-0272f988bd8c",
+      "AmplifyAppId": "dwxknbxpetkwo"
     },
     "categories": {
       "auth": {
-        "trashtrackerwebsite3b30a2ef": {}
+        "trashtrackerwebapp269e1b2c": {}
       },
       "function": {
-        "trashLambdaFunction": {
-          "deploymentBucketName": "amplify-amplify41727905d3844-staging-215128-deployment",
-          "s3Key": "amplify-builds/trashLambdaFunction-3769654f5962762f4950-build.zip",
-          "secretsPathAmplifyAppId": "dwxknbxpetkwo",
-          "twilioNumber": "+18166086096"
+        "webappLambda": {
+          "deploymentBucketName": "amplify-amplify0a8bcab924934-staging-210245-deployment",
+          "s3Key": "amplify-builds/webappLambda-76516c692b78716c3778-build.zip"
         }
       }
     }

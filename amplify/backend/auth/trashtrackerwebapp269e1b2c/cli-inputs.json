@@ -1,10 +1,10 @@
 {
   "version": "1",
   "cognitoConfig": {
-    "identityPoolName": "trashtrackerwebsite3b30a2ef_identitypool_3b30a2ef",
+    "identityPoolName": "trashtrackerwebapp269e1b2c_identitypool_269e1b2c",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "trasht3b30a2ef",
-    "userPoolName": "trashtrackerwebsite3b30a2ef_userpool_3b30a2ef",
+    "resourceNameTruncated": "trasht269e1b2c",
+    "userPoolName": "trashtrackerwebapp269e1b2c_userpool_269e1b2c",
     "autoVerifiedAttributes": [
       "email"
     ],
@@ -31,29 +31,19 @@
     "userpoolClientReadAttributes": [
       "email"
     ],
-    "userpoolClientLambdaRole": "trasht3b30a2ef_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "trasht269e1b2c_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "3b30a2ef",
-    "resourceName": "trashtrackerwebsite3b30a2ef",
+    "sharedId": "269e1b2c",
+    "resourceName": "trashtrackerwebapp269e1b2c",
     "authSelections": "identityPoolAndUserPool",
     "useDefault": "default",
+    "usernameAttributes": [
+      "email"
+    ],
+    "triggers": {},
     "userPoolGroupList": [],
     "serviceName": "Cognito",
     "usernameCaseSensitive": false,
-    "useEnabledMfas": true,
-    "authRoleArn": {
-      "Fn::GetAtt": [
-        "AuthRole",
-        "Arn"
-      ]
-    },
-    "unauthRoleArn": {
-      "Fn::GetAtt": [
-        "UnauthRole",
-        "Arn"
-      ]
-    },
-    "breakCircularDependency": true,
-    "dependsOn": []
+    "useEnabledMfas": true
   }
 }
