@@ -18,7 +18,7 @@
       "function": {
         "webappLambda": {
           "deploymentBucketName": "amplify-amplify0a8bcab924934-staging-210245-deployment",
-          "s3Key": "amplify-builds/webappLambda-76516c692b78716c3778-build.zip"
+          "s3Key": "amplify-builds/webappLambda-48517868625430644835-build.zip"
         }
       }
     }

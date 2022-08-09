@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './Datatable.css';
 import { API } from 'aws-amplify';
 
-const myAPI = "trashTrackerRESTApi"
+const myAPI = "webappREST"
 const path = '/'; 
 
 const Datatable3 = () => {
