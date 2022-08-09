@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "paths": {
+    "/trash/{trashId}": {
+      "name": "/trash/{trashId}",
+      "lambdaFunction": "trashLambdaFunction",
+      "permissions": {
+        "setting": "open"
+      }
+    }
+  }
+}
