@@ -24,8 +24,8 @@ Trash Tracker is a simple, lightweight system that allows residents and staff of
 
 ## Deployment
 
-Click on [this link](https://main.d1kfmvyfytx4m7.amplifyapp.com/home) or copy and paste the url to your browser to see the website:
-https://main.d1kfmvyfytx4m7.amplifyapp.com/. If you don't have an account, create an account to access.
+Click on [this link](https://main.dwxknbxpetkwo.amplifyapp.com/) or copy and paste the url to your browser to see the website:
+https://main.dwxknbxpetkwo.amplifyapp.com/. If you don't have an account, create an account to access.
 
 ## License
 
