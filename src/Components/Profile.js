@@ -18,7 +18,7 @@ const Profile = () => {
                 <br/><br/><br/><br/>
                 <h6>Reset Password</h6>
                 <p>
-                    If you would like to reset your password, click the Reset Password button, and
+                    If you would like to reset your password, please click the Reset Password button, and
                     we will send you an email to reset your password.
                 </p>
                 <button>Reset Password</button>
