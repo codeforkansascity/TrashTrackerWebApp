@@ -7,6 +7,22 @@
       "permissions": {
         "setting": "open"
       }
+    },
+    "/twilio": {
+      "name": "/twilio",
+      "lambdaFunction": "crudDynamoDB",
+      "permissions": {
+        "setting": "protected",
+        "auth": [
+          "create",
+          "read",
+          "update",
+          "delete"
+        ],
+        "guest": [
+          "read"
+        ]
+      }
     }
   }
 }

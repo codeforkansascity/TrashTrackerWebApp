@@ -1,0 +1,28 @@
+{
+  "resourceName": "twilioStorage",
+  "tableName": "twilioStorage",
+  "partitionKey": {
+    "fieldName": "body",
+    "fieldType": "string"
+  },
+  "sortKey": {
+    "fieldName": "report_date",
+    "fieldType": "string"
+  },
+  "gsi": [
+    {
+      "name": "reporterLocation",
+      "partitionKey": {
+        "fieldName": "report_from",
+        "fieldType": "string"
+      },
+      "sortKey": {
+        "fieldName": "location",
+        "fieldType": "string"
+      }
+    }
+  ],
+  "triggerFunctions": [
+    "twilioStorageTrigger9385b27f"
+  ]
+}
