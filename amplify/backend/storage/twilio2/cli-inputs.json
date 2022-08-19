@@ -1,0 +1,10 @@
+{
+  "resourceName": "twilio2",
+  "tableName": "twilio2",
+  "partitionKey": {
+    "fieldName": "body",
+    "fieldType": "string"
+  },
+  "gsi": [],
+  "triggerFunctions": []
+}
