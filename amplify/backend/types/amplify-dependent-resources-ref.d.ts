@@ -28,21 +28,10 @@ export type AmplifyDependentResourcesAttributes = {
             "Arn": "string",
             "Region": "string",
             "LambdaExecutionRole": "string"
-        },
-        "crudDynamoDB2": {
-            "Name": "string",
-            "Arn": "string",
-            "Region": "string",
-            "LambdaExecutionRole": "string"
         }
     },
     "api": {
         "webappREST": {
-            "RootUrl": "string",
-            "ApiName": "string",
-            "ApiId": "string"
-        },
-        "apifdee16f8": {
             "RootUrl": "string",
             "ApiName": "string",
             "ApiId": "string"
@@ -57,14 +46,6 @@ export type AmplifyDependentResourcesAttributes = {
             "PartitionKeyType": "string",
             "SortKeyName": "string",
             "SortKeyType": "string",
-            "Region": "string"
-        },
-        "twilio2": {
-            "Name": "string",
-            "Arn": "string",
-            "StreamArn": "string",
-            "PartitionKeyName": "string",
-            "PartitionKeyType": "string",
             "Region": "string"
         }
     }

@@ -67,25 +67,6 @@
           }
         }
       ]
-    },
-    "crudDynamoDB2": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda",
-      "dependsOn": [
-        {
-          "category": "storage",
-          "resourceName": "twilio2",
-          "attributes": [
-            "Name",
-            "Arn"
-          ],
-          "attributeEnvMap": {
-            "Name": "TABLE_NAME",
-            "Arn": "TABLE_ARN"
-          }
-        }
-      ]
     }
   },
   "api": {
@@ -110,28 +91,10 @@
           ]
         }
       ]
-    },
-    "apifdee16f8": {
-      "service": "API Gateway",
-      "providerPlugin": "awscloudformation",
-      "dependsOn": [
-        {
-          "category": "function",
-          "resourceName": "crudDynamoDB2",
-          "attributes": [
-            "Name",
-            "Arn"
-          ]
-        }
-      ]
     }
   },
   "storage": {
     "twilioStorage": {
-      "service": "DynamoDB",
-      "providerPlugin": "awscloudformation"
-    },
-    "twilio2": {
       "service": "DynamoDB",
       "providerPlugin": "awscloudformation"
     }
