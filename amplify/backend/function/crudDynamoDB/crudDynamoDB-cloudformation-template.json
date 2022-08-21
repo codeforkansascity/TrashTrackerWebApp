@@ -23,6 +23,10 @@
     "storagetwilioStorageArn": {
       "Type": "String",
       "Default": "storagetwilioStorageArn"
+    },
+    "storagetwilioStorageStreamArn": {
+      "Type": "String",
+      "Default": "storagetwilioStorageStreamArn"
     }
   },
   "Conditions": {
@@ -77,6 +81,15 @@
             },
             "REGION": {
               "Ref": "AWS::Region"
+            },
+            "STORAGE_TWILIOSTORAGE_NAME": {
+              "Ref": "storagetwilioStorageName"
+            },
+            "STORAGE_TWILIOSTORAGE_ARN": {
+              "Ref": "storagetwilioStorageArn"
+            },
+            "STORAGE_TWILIOSTORAGE_STREAMARN": {
+              "Ref": "storagetwilioStorageStreamArn"
             }
           }
         },
@@ -179,6 +192,52 @@
                 "dynamodb:PutItem",
                 "dynamodb:UpdateItem",
                 "dynamodb:DeleteItem"
+              ],
+              "Resource": [
+                {
+                  "Ref": "storagetwilioStorageArn"
+                },
+                {
+                  "Fn::Join": [
+                    "/",
+                    [
+                      {
+                        "Ref": "storagetwilioStorageArn"
+                      },
+                      "index/*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "AmplifyResourcesPolicy": {
+      "DependsOn": [
+        "LambdaExecutionRole"
+      ],
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyName": "amplify-lambda-execution-policy",
+        "Roles": [
+          {
+            "Ref": "LambdaExecutionRole"
+          }
+        ],
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "dynamodb:Get*",
+                "dynamodb:BatchGetItem",
+                "dynamodb:List*",
+                "dynamodb:Describe*",
+                "dynamodb:Scan",
+                "dynamodb:Query"
               ],
               "Resource": [
                 {
