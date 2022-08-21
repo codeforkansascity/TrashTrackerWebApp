@@ -3,7 +3,10 @@
   "permissions": {
     "storage": {
       "twilioStorage": [
-        "read"
+        "create",
+        "read",
+        "update",
+        "delete"
       ]
     }
   }
