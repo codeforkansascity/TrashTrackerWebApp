@@ -1,3 +1,5 @@
+// This file displays a CRUD method with the GraphQL api. 
+// Note that the GraphQL api is already deleted from the backend so this file is not in use. 
 import React, { useState, useEffect } from 'react';
 import './Datatable.css';
 import { API } from 'aws-amplify';
