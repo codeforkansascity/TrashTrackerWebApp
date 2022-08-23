@@ -1,3 +1,4 @@
+// This file gives a hard-coded example of the table.
 import React, { useState, useEffect } from 'react';
 import './Datatable.css';
 
