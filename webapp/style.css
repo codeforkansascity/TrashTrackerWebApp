@@ -109,7 +109,6 @@ iframe {
 #main-table {
   margin-top: 1em;
   background-color: #f9f6f7;
-  padding-bottom: 7rem;
 }
 
 .btn-view,
@@ -139,11 +138,11 @@ iframe {
 /* Footer */
 
 #footer {
-  padding: 1rem;
+  margin-top: 2em;
 }
 
 .foot-note {
-  color: white;
-  font-weight: 700;
+  font-size: 0.75rem;
+  color: rgb(161, 161, 161);
   text-align: center;
 }
