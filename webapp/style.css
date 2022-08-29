@@ -1,0 +1,148 @@
+body {
+  margin: auto;
+  font-family: "Poppins", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  max-width: 1190px;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+/* NavBar Styling */
+
+.navbar-container {
+  margin: auto;
+  border-bottom: 1px solid #dfdfdf;
+}
+
+.navbar-brand {
+  font-size: 1.5rem;
+  color: #a461d8;
+  font-weight: 600;
+}
+
+.nav-link {
+  color: #44444f;
+  font-size: 1rem;
+  font-family: "Roboto", sans-serif;
+}
+
+.navbar {
+  background-color: #fff;
+}
+
+.nav-item {
+  padding: 0 0.5rem 0;
+}
+
+.user {
+  padding-right: 2.5rem;
+}
+
+/* Print Report */
+
+.print-report {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2em;
+  font-size: 1.25rem;
+  font-weight: 700;
+  padding: 0 1em;
+}
+
+.print-report-btn {
+  height: 38px;
+  width: 142px;
+  background-color: #44444f;
+  border-radius: 10px;
+  border: none;
+  /* padding: 0 1em; */
+}
+
+.print-report-btn:hover {
+  background-color: black;
+  cursor: pointer;
+}
+
+/* Google Maps Embed */
+
+#map,
+.mapouter {
+  height: 500px;
+  margin: 1em auto 2em auto;
+}
+
+.gmap_canvas {
+  border: 6px solid #a461d8;
+  border-radius: 10px;
+  max-width: 1190px;
+}
+
+iframe {
+  width: 100%;
+  height: 100%;
+}
+
+/* Search  */
+
+#search {
+  margin-top: 2em;
+  background-color: #f9f6f7;
+  font-family: "Roboto", sans-serif;
+  color: black;
+}
+
+.entries {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.form-label {
+  font-weight: 500;
+}
+
+/* Table */
+
+#main-table {
+  margin-top: 1em;
+  background-color: #f9f6f7;
+}
+
+.btn-view,
+.btn-del {
+  font-size: 0.875rem;
+  background-color: #1e75ff10;
+  color: #1e75ff;
+  padding: 0.2rem 1rem;
+  cursor: pointer;
+  float: left;
+  border: none;
+}
+
+.btn-view {
+  border-radius: 5px 0 0 5px;
+}
+
+.btn-del {
+  border-radius: 0 5px 5px 0;
+}
+
+.btn-view:hover,
+.btn-del:hover {
+  background-color: #1e75ff30;
+}
+
+/* Footer */
+
+#footer {
+  margin-top: 2em;
+}
+
+.foot-note {
+  font-size: 0.75rem;
+  color: rgb(161, 161, 161);
+  text-align: center;
+}
