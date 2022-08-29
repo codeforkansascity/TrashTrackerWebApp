@@ -39,11 +39,11 @@ class App extends React.Component {
                             <thead>
                                 <tr>
                                 <th scope="col">#</th>
+                                <th scope="col">Photo</th>
                                 <th scope="col">Trash</th>
                                 <th scope="col">Location</th>
                                 <th scope="col">Reported from</th>
                                 <th scope="col">Date</th>
-                                <th scope="col">Photo</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Edit/Del</th>
                                 </tr>
@@ -53,6 +53,9 @@ class App extends React.Component {
                                     items.map((item) => (
                                         <tr>
                                             <td></td>
+                                            <td>
+                                                <img src={ item.photo_url } class="custom-photo"/>
+                                            </td>
                                             <td>
                                                 { item.trash_name }
                                             </td>
@@ -64,9 +67,6 @@ class App extends React.Component {
                                             </td>
                                             <td>
                                                 { item.report_date }
-                                            </td>
-                                            <td>
-                                                <a href={ item.photo_url }>Photo</a>
                                             </td>
                                             <td>New</td>
                                             <td>Edit/Del</td>
