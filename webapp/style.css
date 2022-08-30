@@ -194,7 +194,7 @@ iframe {
   transform: translate(-50%, -50%);
   width: 50%;
 
-  background-color: white;
+  background-color: #fff;
   padding: 1rem;
   border-radius: 10px;
   box-shadow: 0 3rem 5rem rgba(0, 0, 0, 0.3);
