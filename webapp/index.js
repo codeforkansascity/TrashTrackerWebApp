@@ -22,9 +22,11 @@ fetch(
     for (let i = 0; i < data.length; i++) {
       dataTable.innerHTML += ` <tr class="data-row">
 <th scope="row">
-  <img src="${data[i].photo_url}" class="img-thumb" id="modal-open-${
+  <img src="${data[i].photo_url}" class="img-thumb ${
         data[i].body
-      }" alt="Thumbnail Not Provided" />
+      }" alt="Thumbnail Not Provided" onClick="openImg('${
+        data[i].photo_url
+      }')" />
 </th>
 <td><img src="images/geo-point.svg" alt="Location Point" /></td>
 <td>${data[i].location.slice(9, 50).toUpperCase()}</td>
@@ -48,6 +50,36 @@ fetch(
 <div class="overlay hidden"></div></div>
 `;
     }
-  })
+  });
 
-  .catch((err) => console.error(err));
+//   .catch((err) => console.error(err));
+
+// Modal Functionality
+
+var modal = document.querySelector(".my-modal");
+var overlay = document.querySelector(".overlay");
+var btnCloseModal = document.querySelector(".close-modal");
+var modalImg = document.getElementById("modal-img");
+
+const closeModal = function () {
+  modal.classList.add("hidden");
+  overlay.classList.add("hidden");
+};
+
+btnCloseModal.addEventListener("click", closeModal);
+overlay.addEventListener("click", closeModal);
+
+document.addEventListener("keydown", function (e) {
+  // console.log(e.key);
+
+  if (e.key === "Escape" && !modal.classList.contains("hidden")) {
+    closeModal();
+  }
+});
+
+function openImg(img) {
+  console.log(img);
+  modalImg.innerHTML = `<img class="my-modal-img" src="${img}"> `;
+  modal.classList.remove("hidden");
+  overlay.classList.remove("hidden");
+}
