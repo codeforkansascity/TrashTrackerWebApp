@@ -57,16 +57,16 @@ class App extends React.Component {
                                                 <img src={ item.photo_url } class="custom-photo"/>
                                             </td>
                                             <td>
-                                                { item.trash_name }
+                                                { item.trash_name.charAt(0).toUpperCase() + item.trash_name.slice(1) }
                                             </td>
                                             <td>
-                                                { item.location }
+                                                { item.location.slice(9) }
                                             </td>
                                             <td>
-                                                { item.report_from }
+                                                { item.report_from.slice(2,5) + "-" + item.report_from.slice(5,8) + "-" + item.report_from.slice(8) }
                                             </td>
                                             <td>
-                                                { item.report_date }
+                                                { item.report_date.slice(0, 10) }
                                             </td>
                                             <td>New</td>
                                             <td>Edit/Del</td>
