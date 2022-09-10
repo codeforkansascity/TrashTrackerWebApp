@@ -36,8 +36,8 @@ const sortKeyType = "S";
 const hasSortKey = sortKeyName !== "";
 const path = "/twilio";
 const UNAUTH = 'UNAUTH';
-const hashKeyPath = '/:' + partitionKeyName; 
-const sortKeyPath = hasSortKey ? '/:' + sortKeyName : '';
+const hashKeyPath = '/' + partitionKeyName; 
+const sortKeyPath = hasSortKey ? '/' + sortKeyName : '';
 
 // declare a new express app
 const app = express()

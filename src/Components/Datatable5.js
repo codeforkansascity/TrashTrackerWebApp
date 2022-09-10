@@ -15,7 +15,7 @@ class App extends React.Component {
 	// ComponentDidMount is used to
 	// execute the code
 	componentDidMount() {
-		fetch("https://9gdq2gvn61.execute-api.us-east-2.amazonaws.com/staging/twilio/:body")
+		fetch("https://9gdq2gvn61.execute-api.us-east-2.amazonaws.com/staging/twilio/body")
 			.then((res) => res.json())
 			.then((json) => {
 				this.setState({
