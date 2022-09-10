@@ -60,6 +60,12 @@ export type AmplifyDependentResourcesAttributes = {
             "Name": "string",
             "Region": "string",
             "Arn": "string"
+        },
+        "map1": {
+            "Name": "string",
+            "Style": "string",
+            "Region": "string",
+            "Arn": "string"
         }
     }
 }

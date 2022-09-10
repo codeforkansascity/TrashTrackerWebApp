@@ -98,7 +98,7 @@
   },
   "geo": {
     "trashMap": {
-      "isDefault": true,
+      "isDefault": false,
       "providerPlugin": "awscloudformation",
       "service": "Map",
       "mapStyle": "VectorEsriStreets",
@@ -120,6 +120,22 @@
       "dataProvider": "HERE",
       "dataSourceIntendedUse": "SingleUse",
       "accessType": "AuthorizedUsers",
+      "dependsOn": [
+        {
+          "category": "auth",
+          "resourceName": "trashtrackerwebapp269e1b2c",
+          "attributes": [
+            "UserPoolId"
+          ]
+        }
+      ]
+    },
+    "map1": {
+      "isDefault": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Map",
+      "mapStyle": "RasterEsriImagery",
+      "accessType": "AuthorizedAndGuestUsers",
       "dependsOn": [
         {
           "category": "auth",
