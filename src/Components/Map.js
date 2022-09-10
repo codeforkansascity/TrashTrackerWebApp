@@ -10,7 +10,7 @@ export default function BasicMap() {
             longitude: -94.5340805,
             zoom: 14,
         }}>
-            <LocationSearch />
+            <LocationSearch position="top-left"/>
         </MapView>
     </div>
 }
