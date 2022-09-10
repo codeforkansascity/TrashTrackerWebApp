@@ -54,7 +54,7 @@ class App extends React.Component {
                                         <tr>
                                             <td></td>
                                             <td>
-                                                <img src={ item.photo_url } class="custom-photo"/>
+                                                <img src={ item.photo_url } alt="Thumbnail Not Provided" class="custom-photo"/>
                                             </td>
                                             <td>
                                                 { item.trash_name.charAt(0).toUpperCase() + item.trash_name.slice(1) }
