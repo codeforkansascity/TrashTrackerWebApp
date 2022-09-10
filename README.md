@@ -13,7 +13,9 @@ Trash Tracker is a simple, lightweight system that allows residents and staff of
 1. Install dependencies
 
     ```bash
+    npm install -g @aws-amplify/cli
     npm i
+    amplify pull dwxknbxpetkwo
     ```
 
 2. Start the app

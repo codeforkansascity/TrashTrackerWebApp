@@ -59,7 +59,6 @@ code {
   background-color: #44444f;
   border-radius: 10px;
   border: none;
-  /* padding: 0 1em; */
 }
 
 .print-report-btn:hover {
@@ -90,7 +89,6 @@ iframe {
 
 #search {
   margin-top: 2em;
-  background-color: #f9f6f7;
   font-family: "Roboto", sans-serif;
   color: black;
 }
@@ -108,11 +106,19 @@ iframe {
 
 #main-table {
   margin-top: 1em;
-  background-color: #f9f6f7;
+}
+
+.data-row {
+  border-bottom: 1px solid #1e75ff30;
+}
+
+.thumb.col {
+  max-width: 100px;
 }
 
 .btn-view,
-.btn-del {
+.btn-del,
+.btn-mark {
   font-size: 0.875rem;
   background-color: #1e75ff10;
   color: #1e75ff;
@@ -127,12 +133,24 @@ iframe {
 }
 
 .btn-del {
+  border-radius: 0;
+}
+
+.btn-mark {
   border-radius: 0 5px 5px 0;
 }
 
 .btn-view:hover,
-.btn-del:hover {
+.btn-del:hover,
+.btn-mark:hover {
   background-color: #1e75ff30;
+}
+
+.img-thumb {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  cursor: pointer;
 }
 
 /* Footer */
@@ -145,4 +163,51 @@ iframe {
   font-size: 0.75rem;
   color: rgb(161, 161, 161);
   text-align: center;
+}
+
+/* MODAL */
+
+.close-modal {
+  position: absolute;
+  top: -1rem;
+  right: 1rem;
+  font-size: 5rem;
+  color: #dfdfdf;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+.my-modal-img {
+  max-width: 100%;
+  object-fit: cover;
+}
+
+.hidden {
+  display: none;
+}
+
+.my-modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50%;
+
+  background-color: white;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 3rem 5rem rgba(0, 0, 0, 0.3);
+  z-index: 10;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(3px);
+  z-index: 5;
 }
