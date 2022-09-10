@@ -102,7 +102,7 @@
       "providerPlugin": "awscloudformation",
       "service": "Map",
       "mapStyle": "VectorEsriStreets",
-      "accessType": "AuthorizedUsers",
+      "accessType": "AuthorizedAndGuestUsers",
       "dependsOn": [
         {
           "category": "auth",

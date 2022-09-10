@@ -10,6 +10,8 @@
     "aws-amplify": "^4.3.30",
     "axios": "^0.27.2",
     "bootstrap": "^5.2.0",
+    "maplibre-gl": "^2.4.0",
+    "maplibre-gl-js-amplify": "^2.0.4",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-axios": "^2.0.6",
