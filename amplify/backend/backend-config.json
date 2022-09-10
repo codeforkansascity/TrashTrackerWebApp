@@ -131,10 +131,26 @@
       ]
     },
     "map1": {
-      "isDefault": true,
+      "isDefault": false,
       "providerPlugin": "awscloudformation",
       "service": "Map",
       "mapStyle": "RasterEsriImagery",
+      "accessType": "AuthorizedAndGuestUsers",
+      "dependsOn": [
+        {
+          "category": "auth",
+          "resourceName": "trashtrackerwebapp269e1b2c",
+          "attributes": [
+            "UserPoolId"
+          ]
+        }
+      ]
+    },
+    "map2": {
+      "isDefault": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Map",
+      "mapStyle": "VectorEsriNavigation",
       "accessType": "AuthorizedAndGuestUsers",
       "dependsOn": [
         {
