@@ -7,9 +7,9 @@ import PrintMap from './PrintMap';
 const Home = () => {
     return (
         <div className="custom-container">
-            <PrintMap />
             <Datafilter />
             <Datatable5 />
+            <PrintMap />
             <Footer />
         </div>
     );
