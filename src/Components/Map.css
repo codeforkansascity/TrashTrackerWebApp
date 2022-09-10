@@ -1,7 +1,7 @@
 /* Google Maps Embed */
-#map { 
-    height: 40vh;
-    width: 40vw;
+#custom-map { 
+    height: 50vh!important;
+    width: 50vw!important;
     margin: auto;
 }
 
