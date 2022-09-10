@@ -11,6 +11,6 @@ export default function BasicMap() {
             zoom: 14,
         }}>
             <LocationSearch />
-        </MapView>;
+        </MapView>
     </div>
 }
