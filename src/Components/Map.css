@@ -1,7 +1,8 @@
 /* Google Maps Embed */
-#map {
-    background: linear-gradient(to right, #ffe8d6, #ffe8d6);
-    padding: 7rem;
+#custom-map { 
+    height: 50vh!important;
+    width: 50vw!important;
+    margin: auto;
 }
 
 .mapouter {

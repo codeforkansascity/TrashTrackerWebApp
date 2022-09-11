@@ -10,12 +10,14 @@
     "aws-amplify": "^4.3.30",
     "axios": "^0.27.2",
     "bootstrap": "^5.2.0",
+    "maplibre-gl": "^2.4.0",
+    "maplibre-gl-js-amplify": "^2.0.4",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-axios": "^2.0.6",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.3.0",
-    "react-scripts": "5.0.1",
+    "react-scripts": "^5.0.1",
     "react-to-print": "^2.14.7",
     "web-vitals": "^2.1.4"
   },
@@ -33,9 +35,8 @@
   },
   "browserslist": {
     "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
+      "defaults",
+      "not ie 11"
     ],
     "development": [
       "last 1 chrome version",

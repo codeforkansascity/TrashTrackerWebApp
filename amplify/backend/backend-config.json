@@ -95,5 +95,72 @@
       "service": "DynamoDB",
       "providerPlugin": "awscloudformation"
     }
+  },
+  "geo": {
+    "trashMap": {
+      "isDefault": false,
+      "providerPlugin": "awscloudformation",
+      "service": "Map",
+      "mapStyle": "VectorEsriStreets",
+      "accessType": "AuthorizedAndGuestUsers",
+      "dependsOn": [
+        {
+          "category": "auth",
+          "resourceName": "trashtrackerwebapp269e1b2c",
+          "attributes": [
+            "UserPoolId"
+          ]
+        }
+      ]
+    },
+    "trashLocationSearch": {
+      "isDefault": true,
+      "providerPlugin": "awscloudformation",
+      "service": "PlaceIndex",
+      "dataProvider": "HERE",
+      "dataSourceIntendedUse": "SingleUse",
+      "accessType": "AuthorizedUsers",
+      "dependsOn": [
+        {
+          "category": "auth",
+          "resourceName": "trashtrackerwebapp269e1b2c",
+          "attributes": [
+            "UserPoolId"
+          ]
+        }
+      ]
+    },
+    "map1": {
+      "isDefault": false,
+      "providerPlugin": "awscloudformation",
+      "service": "Map",
+      "mapStyle": "RasterEsriImagery",
+      "accessType": "AuthorizedAndGuestUsers",
+      "dependsOn": [
+        {
+          "category": "auth",
+          "resourceName": "trashtrackerwebapp269e1b2c",
+          "attributes": [
+            "UserPoolId"
+          ]
+        }
+      ]
+    },
+    "map2": {
+      "isDefault": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Map",
+      "mapStyle": "VectorEsriNavigation",
+      "accessType": "AuthorizedAndGuestUsers",
+      "dependsOn": [
+        {
+          "category": "auth",
+          "resourceName": "trashtrackerwebapp269e1b2c",
+          "attributes": [
+            "UserPoolId"
+          ]
+        }
+      ]
+    }
   }
 }

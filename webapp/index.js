@@ -5,7 +5,7 @@ const dataTable = document.getElementById("data-table");
 // Fetch Data
 
 fetch(
-  "https://9gdq2gvn61.execute-api.us-east-2.amazonaws.com/staging/twilio/:body"
+  "https://9gdq2gvn61.execute-api.us-east-2.amazonaws.com/staging/twilio/body"
 )
   .then((res) => {
     if (!res.ok) {

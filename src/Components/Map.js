@@ -1,25 +1,57 @@
 import React from "react";
+import { MapView, LocationSearch } from '@aws-amplify/ui-react';
+import '@aws-amplify/ui-react/styles.css';
 import './Map.css';
 
-class Map extends React.PureComponent {
-    render() {
-        return (
-            <section id="map">
-                <div class="container">
-                    <div class="row justify-content-md-center">
-                        <div class="col-8">
-                            <div class="mapouter">
-                                <div class="gmap_canvas">
-                                    <iframe width="700" height="500" id="gmap_canvas" src="https://maps.google.com/maps?q=kansas%20city,%20mo&t=&z=15&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
-                                    <a href="https://fmovies-online.net">fmovies</a><br />
-                                    <a href="https://www.embedgooglemap.net">google maps embed code generator</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        )
-}}
+const Map = () => {
+  return <MapView id="custom-map" initialViewState={{
+        latitude: 39.1002489,
+        longitude: -94.5340805,
+        zoom: 14,
+    }}>
+        <LocationSearch position="top-left"/>
+    </MapView>
+};
 
 export default Map;
+
+// import { createMap } from "maplibre-gl-js-amplify";
+// import "maplibre-gl/dist/maplibre-gl.css";
+// import { drawPoints } from "maplibre-gl-js-amplify";
+
+// async function initializeMap() {
+//     const map = await createMap({
+//         container: "map", // An HTML Element or HTML element ID to render the map in https://maplibre.org/maplibre-gl-js-docs/api/map/
+//         center: [-123.1187, 49.2819], // [Longitude, Latitude]
+//         zoom: 11,
+//     })
+// }
+
+// initializeMap();
+
+// export default ...
+
+// map.on("load", function () {
+//     drawPoints("mySourceName", // Arbitrary source name
+//         [
+//             {
+//               coordinates: [-122.483696, 37.833818], // [Longitude, Latitude]
+//               title: "Golden Gate Bridge",
+//               address: "A suspension bridge spanning the Golden Gate",
+//             },
+//             {
+//               coordinates: [- 122.4770, 37.8105], // [Longitude, Latitude]
+//             },
+//         ], // An array of coordinate data, an array of Feature data, or an array of [NamedLocations](https://github.com/aws-amplify/maplibre-gl-js-amplify/blob/main/src/types.ts#L8)
+//         map,
+//         {
+//             showCluster: true,
+//             unclusteredOptions: {
+//                 showMarkerPopup: true,
+//             },
+//             clusterOptions: {
+//                 showCount: true,
+//             },
+//         }
+//     );
+// });

@@ -48,5 +48,30 @@ export type AmplifyDependentResourcesAttributes = {
             "SortKeyType": "string",
             "Region": "string"
         }
+    },
+    "geo": {
+        "trashMap": {
+            "Name": "string",
+            "Style": "string",
+            "Region": "string",
+            "Arn": "string"
+        },
+        "trashLocationSearch": {
+            "Name": "string",
+            "Region": "string",
+            "Arn": "string"
+        },
+        "map1": {
+            "Name": "string",
+            "Style": "string",
+            "Region": "string",
+            "Arn": "string"
+        },
+        "map2": {
+            "Name": "string",
+            "Style": "string",
+            "Region": "string",
+            "Arn": "string"
+        }
     }
 }
