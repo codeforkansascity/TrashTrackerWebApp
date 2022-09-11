@@ -16,6 +16,7 @@ code {
 .navbar-container {
   margin: auto;
   border-bottom: 1px solid #dfdfdf;
+  z-index: 10;
 }
 
 .navbar-brand {
