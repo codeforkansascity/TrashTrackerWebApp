@@ -5,6 +5,16 @@
     margin: auto;
 }
 
+html,
+body,
+#root { 
+  height: 100%;
+}
+
+#map {
+  height: 50%;
+}
+
 .mapouter {
     position:relative;
     text-align:center;

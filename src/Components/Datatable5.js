@@ -1,8 +1,7 @@
 import React from "react";
 import './Datatable.css';
 
-class App extends React.Component {
-	// Constructor
+class Datatable extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -10,26 +9,25 @@ class App extends React.Component {
 			items: [],
 			DataisLoaded: false
 		};
-	}
-
-	// ComponentDidMount is used to
-	// execute the code
+    }
 	componentDidMount() {
 		fetch("https://9gdq2gvn61.execute-api.us-east-2.amazonaws.com/staging/twilio/body")
 			.then((res) => res.json())
-			.then((json) => {
+			.then((reports) => {
 				this.setState({
-					items: json,
+					items: reports,
 					DataisLoaded: true
 				});
 			})
 	}
+
 	render() {
 		const { DataisLoaded, items } = this.state;
-		if (!DataisLoaded) return 
-        <div>
-			<h1> Pleses wait some time.... </h1> 
-        </div>
+		if (!DataisLoaded) return (
+            <div>
+                <h1> Pleses wait some time.... </h1> 
+            </div>
+        )
 
 		return (
             <section id="main-table">
@@ -38,21 +36,19 @@ class App extends React.Component {
                         <table className="table table-striped table-hover">
                             <thead>
                                 <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Photo</th>
-                                <th scope="col">Trash</th>
-                                <th scope="col">Location</th>
-                                <th scope="col">Reported from</th>
-                                <th scope="col">Date</th>
-                                <th scope="col">Status</th>
-                                <th scope="col">Edit/Del</th>
+                                    <th scope="col">Photo</th>
+                                    <th scope="col">Trash</th>
+                                    <th scope="col">Location</th>
+                                    <th scope="col">Reported from</th>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Edit</th>
                                 </tr>
                             </thead>
                             <tbody>        
                                 {
                                     items.map((item) => (
                                         <tr>
-                                            <td></td>
                                             <td>
                                                 <img src={ item.photo_url } alt="Thumbnail Not Provided" class="custom-photo"/>
                                             </td>
@@ -69,7 +65,7 @@ class App extends React.Component {
                                                 { item.report_date.slice(0, 10) }
                                             </td>
                                             <td>New</td>
-                                            <td>Edit/Del</td>
+                                            <td><button>Edit</button></td>
                                         </tr>
                                     ))
                                 }
@@ -77,10 +73,9 @@ class App extends React.Component {
                         </table>
                     </div>
                 </div>
-                <br/><br/><br/>
             </section> 
         );
     }
 }
 
-export default App;
+export default Datatable;
