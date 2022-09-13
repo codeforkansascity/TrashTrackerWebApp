@@ -4,7 +4,9 @@
 
 ## Description
 
-The Kansas City region has an ugly trash problem. All across the city, especially in the most economically disadvantaged neighborhoods, people dump trash, tires, furniture, and well, anything, in alleys, vacant lots, and even parks and public spaces. In Kansas City, MO alone, illegal dumping costs the city over $2 million each year, and it takes the city an average of three weeks to respond to a dumping report. Trash Tracker is a simple, lightweight system that allows residents and staff of the Lykins neighborhood to report illegal dumping with a simple text message and allows admin to view reports and search trash locations so that they can arrange staff and volunteers to clean up the trash.
+The Kansas City region has an ugly trash problem. All across the city, especially in the most economically disadvantaged neighborhoods, people dump trash, tires, furniture, and well, anything, in alleys, vacant lots, and even parks and public spaces. In Kansas City, MO alone, illegal dumping costs the city over $2 million each year, and it takes the city an average of three weeks to respond to a dumping report. 
+
+Trash Tracker is a simple, lightweight system that allows residents and staff of the Lykins neighborhood to report illegal dumping with a simple text message and allows admin to view reports and search trash locations so that they can arrange staff and volunteers to clean up the trash.
 
 ## Prerequisites
 * Install [Node](https://nodejs.org/en/download/) 
