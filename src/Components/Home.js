@@ -15,7 +15,7 @@ const Home = () => {
             <h2>Received Reports</h2><br/>
             {/* <Datafilter /> */}
             <Datatable5 />
-            {/* <DataEdit /> */}
+            <DataEdit />
             {/* <PrintMap /> */}
             <Footer />
         </div>

@@ -1,87 +1,83 @@
-// import React from "react";
+import React, { useRef, useState } from "react";
 
-// class DataEdit extends React.Component {
-//   constructor(props) {
-//     super(props);
+function App() {
+  const baseURL = "https://9gdq2gvn61.execute-api.us-east-2.amazonaws.com/staging/twilio/body";
 
-//     this.state = {
-//       items: [],
-//       DataisLoaded: false
-//     };
+  fetch(baseURL)
+      .then((res) => res.json())
+      .then((reports) => {
+        this.setState({
+          items: reports,
+        });
+      })
 
-//     this.handleChange = this.handleChange.bind(this);
-//     this.submit = this.submit.bind(this);
-//   }
+    const put_body = useRef(null);
+    const put_trash_name = useRef(null);
+    const put_location = useRef(null);
 
-//   componentDidMount() {
-//     fetch("https://9gdq2gvn61.execute-api.us-east-2.amazonaws.com/staging/twilio/body")
-//       .then((res) => res.json())
-//       .then((reports) => {
-//         this.setState({
-//           items: reports,
-//           report: '',
-//           DataisLoaded: true
-//         });
-//       })
-//   }
+  const [putResult, setPutResult] = useState(null);
 
-//   handleChange(event) {
-//       const name = event.target.name;
-//       this.setState({[name]: event.target.value});
-//   }
+  const fortmatResponse = (res) => {
+    return JSON.stringify(res, null, 2);
+  }
+  
+  async function putData() {
+    const put_body = put_body.current.value;
 
-//   setReports(e) {
-//     console.log("testing")
-//   }
+    if (put_body) {
+      const putData = {
+        trash_name: put_trash_name.current.value,
+        location: put_location.current.value,
+      };
 
-//   submit(event) {
-//   fetch("https://9gdq2gvn61.execute-api.us-east-2.amazonaws.com/staging/twilio/body", {
-//     method: 'POST',
-//       body: JSON.stringify({ report }),
-//       headers: { 'Content-Type': 'application/json' },
-//   })
-//     .then((res) => res.json())
-//     .then(json => setReports(json.report)
-//     )
-//   };
+      try {
+        const res = await fetch(`${baseURL}`, {
+          method: "put",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(putData),
+        });
 
-// render() {
-//   const { DataisLoaded, items } = this.state;
-//   if (!DataisLoaded) return 
-//       <div>
-//     <h1> Pleses wait some time.... </h1> 
-//       </div>
+        if (!res.ok) {
+          const message = `An error has occured: ${res.status} - ${res.statusText}`;
+          throw new Error(message);
+        }
 
-//   return (
-//     <section>
-//       <br/><br/><br/>
-//       <h2>Reports Edit</h2>
-//       {
-//         items.map((item) => (
-//             <form onSubmit={this.handleSubmit}>
-//                 <label><b>Report:&nbsp;</b>
-//                     <input name="photo_url" type="text" value={item.photo_url} onChange={e => setReports({...report, photo_url: e.target.value})} />
-//                 </label>
-//                 <lable>
-//                     <input name="trash_name" type="text" value={this.state.trash_name} onChange={e => setReports({...report, trash_name: e.target.value})} />
-//                 </lable>
-//                 <label> 
-//                     <input name="location" type="text" value={item.location.slice(9)} onChange={e => setReports({...report, location: e.target.value})} />
-//                 </label>
-//                 <label>
-//                     <input name="report_from" type="text" value={item.report_from.slice(2,5) + "-" + item.report_from.slice(5,8) + "-" + item.report_from.slice(8)} onChange={e => setReports({...report, report_from: e.target.value})} />
-//                 </label>
-//                 <label>
-//                     <input name="report_date" type="text" value={item.report_date.slice(0, 10)} onChange={e => setReports({...report, report_date: e.target.value})} />
-//                 </label>
-                
-//                 <input type="submit" value="Submit" />
-//             </form>
-//           ))
-//         }
-//         <br/><br/><br/>
-//     </section> 
-//   );
-// }}
+        const data = await res.json();
 
-// export default DataEdit;
+        const result = {
+          status: res.status + "-" + res.statusText,
+          headers: { "Content-Type": res.headers.get("Content-Type") },
+          data: data,
+        };
+
+        setPutResult(fortmatResponse(result));
+      } catch (err) {
+        setPutResult(err.message);
+      }
+    }
+  }
+  
+  return (
+    <div className="card">
+      <div className="card-body">
+        <div className="form-group">
+          <input type="text" className="form-control" ref={put_body} placeholder="key" />
+        </div>
+        <div className="form-group">
+          <input type="text" className="form-control" ref={put_trash_name} placeholder="trash" />
+        </div>
+        <div className="form-group">
+          <input type="text" className="form-control" ref={put_location} placeholder="location" />
+        </div>
+        <div className="form-check mb-2">
+          <button className="btn btn-sm btn-primary" onClick={putData}>Update Data</button>
+          { putResult && <div className="alert alert-secondary mt-2" role="alert"><pre>{putResult}</pre></div> }
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default App;
