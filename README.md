@@ -30,11 +30,12 @@ Trash Tracker is a simple, lightweight system that allows residents and staff of
 
 Text 816-608-6096 to report an illegal trash dumping in the Lykins neighborhood.
 
+![SMS App example](./public/example_text_communication.jpeg)
+
 Click on [this link](https://main.dwxknbxpetkwo.amplifyapp.com/) or copy and paste the url to your browser to see the website: https://main.dwxknbxpetkwo.amplifyapp.com/. 
 
 If you don't have an account, please create an account to access.
 
-![SMS App example](./public/example_text_communication.jpeg)
 ![Web App example](./public/example_webapp.png)
 
 ## Troubleshooting 
