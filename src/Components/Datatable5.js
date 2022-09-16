@@ -25,7 +25,7 @@ class Datatable extends React.Component {
 		const { DataisLoaded, items } = this.state;
 		if (!DataisLoaded) return (
             <div>
-                <h1> Pleses wait some time.... </h1> 
+                <h3>Loading...</h3> 
             </div>
         )
 

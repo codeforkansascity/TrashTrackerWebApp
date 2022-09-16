@@ -1,83 +1,97 @@
-import React, { useRef, useState } from "react";
+import React, { useState, useEffect } from "react";
 
-function App() {
-  const baseURL = "https://9gdq2gvn61.execute-api.us-east-2.amazonaws.com/staging/twilio/body";
+function DataEdit() {
 
-  fetch(baseURL)
-      .then((res) => res.json())
-      .then((reports) => {
-        this.setState({
-          items: reports,
-        });
-      })
+  const trashName = useFormInput("");
+  const location = useFormInput("");
 
-    const put_body = useRef(null);
-    const put_trash_name = useRef(null);
-    const put_location = useRef(null);
+  // const [trash, setTrash] = useState("");
+  // const [location, setLocation] = useState("");
 
-  const [putResult, setPutResult] = useState(null);
+  // const handleTrashChange = (e) => {
+  //   setTrash(e.target.value); // update "value" with event target value
+  // };
 
-  const fortmatResponse = (res) => {
-    return JSON.stringify(res, null, 2);
-  }
-  
-  async function putData() {
-    const put_body = put_body.current.value;
+  // const handleLocationChange = (e) => {
+  //   setLocation(e.target.value); // update "value" with event target value
+  // };
 
-    if (put_body) {
-      const putData = {
-        trash_name: put_trash_name.current.value,
-        location: put_location.current.value,
-      };
+  const [formData, setFormData] = useState([]);
 
-      try {
-        const res = await fetch(`${baseURL}`, {
-          method: "put",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(putData),
-        });
-
-        if (!res.ok) {
-          const message = `An error has occured: ${res.status} - ${res.statusText}`;
-          throw new Error(message);
+  const handleTrashChange = (e) => { 
+    for (let i=0; i<formData.length; i++) {
+      if (e.target.name === formData[i].body) {
+        if (e.target.defaultValue === formData[i].trash_name) { // this place still needs to be fixed a little bit because default value can change based on state
+          console.log("changing trash name");
+          formData[i].trash_name = e.target.value
+          console.log(formData);
+          return
+        } else {
+          console.log("changing trash location");
+          return formData[i].location = e.target.value
         }
-
-        const data = await res.json();
-
-        const result = {
-          status: res.status + "-" + res.statusText,
-          headers: { "Content-Type": res.headers.get("Content-Type") },
-          data: data,
-        };
-
-        setPutResult(fortmatResponse(result));
-      } catch (err) {
-        setPutResult(err.message);
       }
     }
   }
-  
+
+  useEffect(() => {
+    fetch("https://9gdq2gvn61.execute-api.us-east-2.amazonaws.com/staging/twilio/body")
+    .then((res) => res.json())
+    .then((reports) => setFormData(reports))
+    .catch(err => console.error(err));
+  },[]) // [] indicates that useEffect doesn't depend on state or props so it won't rerender if state changes and will only fire once when component is rendered
+
+useEffect(()=>{
+  console.log(trashName);
+},[trashName])
+ 
   return (
-    <div className="card">
-      <div className="card-body">
-        <div className="form-group">
-          <input type="text" className="form-control" ref={put_body} placeholder="key" />
-        </div>
-        <div className="form-group">
-          <input type="text" className="form-control" ref={put_trash_name} placeholder="trash" />
-        </div>
-        <div className="form-group">
-          <input type="text" className="form-control" ref={put_location} placeholder="location" />
-        </div>
-        <div className="form-check mb-2">
-          <button className="btn btn-sm btn-primary" onClick={putData}>Update Data</button>
-          { putResult && <div className="alert alert-secondary mt-2" role="alert"><pre>{putResult}</pre></div> }
+    <div><p>hello</p>
+    {formData.map((element) => (
+      <div className="card">
+        <div className="card-body">
+          <textarea name={element.body} type="text" className="form-control" defaultValue={element.trash_name} onChange={handleTrashChange}></textarea>
+          <textarea name={element.body} type="text" className="form-control" defaultValue={element.location} onChange={handleTrashChange}></textarea>
+          {/* <div className="form-group">
+            <textarea name={element.body} type="text" className="form-control" defaultValue={element.trash_name} {...trashName}></textarea>
+          </div>
+          <div className="form-group">
+            <textarea name={element.body} type="text" className="form-control" defaultValue={element.location} {...location}></textarea>
+          </div> */}
+          <div className="form-check mb-2">
+            <button className="btn btn-sm btn-primary" onClick={setFormData}>Update Data</button>
+          </div>
         </div>
       </div>
+    ))}
     </div>
-  );
+  )
 }
 
-export default App;
+const useFormInput = (initialValue) => {
+  const [value, setValue] = useState(initialValue);
+
+  // const handleChange = (e) => {
+  //   setValue(e.target.value);
+  // };
+
+  let inputName;
+  const handleChange = (e) => {
+    inputName = e.target.name;
+    setValue({
+      [e.target.name]: {
+        value: e.target.value
+      }
+    })
+  }
+
+  console.log(value);
+
+  return {
+    setValue,
+    value,
+    onChange: handleChange,
+  };
+};
+
+export default DataEdit;
