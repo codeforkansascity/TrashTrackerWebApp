@@ -1,10 +1,58 @@
 /* Table */
 #main-table {
-    background-color: #f9f6f7;
-    padding-bottom: 7rem;
+  margin: 2em auto;
 }
-  
+
+data-row {
+  border-bottom: 1px solid #1e75ff30;
+}
+
+.thumb.col {
+  max-width: 100px;
+}
+
+.btn-view,
+.btn-del,
+.btn-mark {
+  font-size: 0.875rem;
+  background-color: #1e75ff10;
+  color: #1e75ff;
+  padding: 0.2rem 1rem;
+  cursor: pointer;
+  float: left;
+  border: none;
+}
+
+.btn-view {
+  border-radius: 5px 0 0 5px;
+}
+
+.btn-del {
+  border-radius: 5px;
+}
+
+.btn-mark {
+  border-radius: 0 5px 5px 0;
+}
+
+.btn-view:hover,
+.btn-del:hover,
+.btn-mark:hover {
+  background-color: #1e75ff30;
+}
+
 .custom-photo {
-    width: 150px;
-    height: 100px;
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.loader {
+  text-align: center;
+  padding: 2em;
+}
+
+.loader > img {
+  max-width: 100px;
 }

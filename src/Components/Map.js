@@ -1,29 +1,34 @@
 import React from "react";
-import { MapView, LocationSearch } from '@aws-amplify/ui-react';
-import '@aws-amplify/ui-react/styles.css';
-import './Map.css';
+import { MapView, LocationSearch } from "@aws-amplify/ui-react";
+import "@aws-amplify/ui-react/styles.css";
+import "./Map.css";
 
 // Map Display Style:
-// Streets style looks a bit dull; 
+// Streets style looks a bit dull;
 // Imagery style doesn't have street name - it's like satellite view;
 // Currently using Navigation style;
 // Haven't tried other style
 
 const Map = () => {
-  return <MapView id="custom-map" initialViewState={{
+  return (
+    <MapView
+      id="custom-map"
+      initialViewState={{
         latitude: 39.1002489,
         longitude: -94.5340805,
         zoom: 14,
-    }}>
-        <LocationSearch position="top-left"/>
+      }}
+    >
+      <LocationSearch position="top-left" />
     </MapView>
+  );
 };
 
 export default Map;
 
 // Reference: https://aws.amazon.com/blogs/mobile/add-maps-to-your-app-in-3-steps-with-aws-amplify-geo/
 // Reference: https://docs.amplify.aws/lib/geo/maps/q/platform/js/#display-a-map
-// Configuration for below not completed; DO NOT USE 
+// Configuration for below not completed; DO NOT USE
 
 // import { createMap } from "maplibre-gl-js-amplify";
 // import "maplibre-gl/dist/maplibre-gl.css";

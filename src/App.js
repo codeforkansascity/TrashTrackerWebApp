@@ -1,43 +1,48 @@
-import { Authenticator } from '@aws-amplify/ui-react';
-import { Link } from 'react-router-dom';
-import Home from "./Components/Home"
+import { Authenticator } from "@aws-amplify/ui-react";
+import { Link } from "react-router-dom";
+import Home from "./Components/Home";
 import { View } from "@aws-amplify/ui-react";
-import '@aws-amplify/ui-react/styles.css';
-import './Components/Nav.css';
-import './App.css';
+import "@aws-amplify/ui-react/styles.css";
+import Dropdown from "react-bootstrap/Dropdown";
 
 function App({ signOut }) {
   return (
-    <Authenticator loginMechanisms={['email']} signUpAttributes={['name']} variation="modal">
+    <Authenticator
+      loginMechanisms={["email"]}
+      signUpAttributes={["name"]}
+      variation="modal"
+    >
       {({ signOut }) => (
         <View className="App">
-            <nav className="navbar navbar-expand-lg">
-              <div className="container-fluid">
-                  <Link to="/" className="navbar-brand">Trash Tracker</Link>
-                  <button
-                      className="navbar-toggler"
-                      type="button"
-                      data-bs-toggle="collapse"
-                      data-bs-target="#navbarSupportedContent"
-                      aria-controls="navbarSupportedContent"
-                      aria-expanded="false"
-                      aria-label="Toggle navigation"
-                  >
-                      <span className="navbar-toggler-icon"></span>
-                  </button>
-                  
-                  <div className="collapse navbar-collapse " id="navbarSupportedContent">
-                      <ul className="navbar-nav position-absolute end-0">
-                          {/* <li className="nav-item">
-                            <button type="button" className="btn btn-outline-secondary">Print Map</button>
-                          </li> */}
-                          <li className="nav-item">
-                            <button className="btn btn-outline-secondary" onClick={signOut}>Sign Out</button>
-                          </li>
-                      </ul>
-                  </div>
-              </div>
-          </nav>
+          <Dropdown>
+            <div className="navbar-container">
+              <nav className="navbar navbar-expand-lg">
+                <div className="container-fluid">
+                  <a className="navbar-brand" href="#/action-9">
+                    Trash Tracker
+                  </a>
+                  <Dropdown.Toggle id="dropdown-basic">
+                    User Menu
+                  </Dropdown.Toggle>
+
+                  <Dropdown.Menu>
+                    <Dropdown.Item href="#/action-1">+ Add User</Dropdown.Item>
+
+                    <Dropdown.Item href="#/action-2">
+                      Update Email
+                    </Dropdown.Item>
+                    <Dropdown.Item href="#/action-3">
+                      Change Password
+                    </Dropdown.Item>
+
+                    <Dropdown.Item href="#/action-4" onClick={signOut}>
+                      Sign Out
+                    </Dropdown.Item>
+                  </Dropdown.Menu>
+                </div>
+              </nav>
+            </div>
+          </Dropdown>
 
           <Home />
         </View>

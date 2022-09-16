@@ -31,12 +31,12 @@
     <title>TrashTracker v1.0</title>
   </head>
   <body>
-    <div class="navbar-container">
-      <nav class="navbar navbar-expand-lg">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="#">Trash Tracker</a>
+    <div className="navbar-container">
+      <nav className="navbar navbar-expand-lg">
+        <div className="container-fluid">
+          <a className="navbar-brand" href="#">Trash Tracker</a>
           <button
-            class="navbar-toggler"
+            className="navbar-toggler"
             type="button"
             data-bs-toggle="collapse"
             data-bs-target="#navbarSupportedContent"
@@ -44,16 +44,18 @@
             aria-expanded="false"
             aria-label="Toggle navigation"
           >
-            <span class="navbar-toggler-icon"></span>
+            <span className="navbar-toggler-icon"></span>
           </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav position-absolute end-0">
-              <li class="nav-item">
-                <a class="nav-link" aria-current="page" href="#">+ Add User</a>
+          <div className="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul className="navbar-nav position-absolute end-0">
+              <li className="nav-item">
+                <a className="nav-link" aria-current="page" href="#"
+                  >+ Add User</a
+                >
               </li>
-              <li class="nav-item dropdown user">
+              <li className="nav-item dropdown user">
                 <a
-                  class="nav-link dropdown-toggle"
+                  className="nav-link dropdown-toggle"
                   href="#"
                   id="navbarDropdown"
                   role="button"
@@ -68,14 +70,20 @@
                   />
                 </a>
                 <ul
-                  class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start"
+                  className="dropdown-menu dropdown-menu-end dropdown-menu-lg-start"
                   aria-labelledby="navbarDropdown"
                 >
-                  <li><a class="dropdown-item" href="#">Update Email</a></li>
-                  <li><a class="dropdown-item" href="#">Change Password</a></li>
-                  <li><hr class="dropdown-divider" /></li>
                   <li>
-                    <a class="dropdown-item" href="#">Sign Out</a>
+                    <a className="dropdown-item" href="#">Update Email</a>
+                  </li>
+                  <li>
+                    <a className="dropdown-item" href="#">Change Password</a>
+                  </li>
+                  <li><hr className="dropdown-divider" /></li>
+                  <li>
+                    <a className="dropdown-item" onClick="{signOut}"
+                      >Sign Out</a
+                    >
                   </li>
                 </ul>
               </li>
@@ -86,9 +94,9 @@
     </div>
 
     <!-- End NavBar -->
-    <div class="print-report">
-      <p class="report-status">Report Status</p>
-      <button class="print-report-btn">
+    <div className="print-report">
+      <p className="report-status">Report Status</p>
+      <button className="print-report-btn">
         <img src="images/print-icon.svg" alt="" />
       </button>
     </div>
@@ -96,10 +104,10 @@
     <!-- Google Maps Embed -->
 
     <section id="map">
-      <div class="container">
-        <div class="row justify-content-md-center">
-          <div class="mapouter">
-            <div class="gmap_canvas">
+      <div className="container">
+        <div className="row justify-content-md-center">
+          <div className="mapouter">
+            <div className="gmap_canvas">
               <iframe
                 width="100%"
                 height="460px"
@@ -135,12 +143,12 @@
 
     <!-- Search Filter Feature -->
     <section id="search">
-      <div class="container">
-        <div class="row entries">
-          <div class="col-2"><p>Search Entries</p></div>
-          <div class="col-sm-3">
+      <div className="container">
+        <div className="row entries">
+          <div className="col-2"><p>Search Entries</p></div>
+          <div className="col-sm-3">
             <select
-              class="form-select form-select-md mb-3"
+              className="form-select form-select-md mb-3"
               aria-label=".form-select-md example"
             >
               <option selected>30 Days</option>
@@ -158,12 +166,12 @@
     <!-- Table -->
 
     <section id="main-table">
-      <div class="container">
-        <div class="row">
-          <table class="table table-borderless">
+      <div className="container">
+        <div className="row">
+          <table className="table table-borderless">
             <thead>
               <tr>
-                <th scope="col" class="thumb-col"></th>
+                <th scope="col" className="thumb-col"></th>
                 <th scope="col"></th>
                 <th scope="col">Location</th>
                 <th scope="col">Description</th>
@@ -179,17 +187,17 @@
     </section>
 
     <!-- MODAL -->
-    <div class="my-modal hidden">
-      <button class="close-modal">&times;</button>
+    <div className="my-modal hidden">
+      <button className="close-modal">&times;</button>
       <div id="modal-img"></div>
     </div>
-    <div class="overlay hidden"></div>
+    <div className="overlay hidden"></div>
 
     <!-- Footer -->
     <section id="footer">
-      <div class="container">
-        <div class="row">
-          <p class="foot-note">Made in KC</p>
+      <div className="container">
+        <div className="row">
+          <p className="foot-note">Made in KC</p>
         </div>
       </div>
     </section>

@@ -1,30 +1,12 @@
 /* Google Maps Embed */
-#custom-map { 
-    height: 50vh!important;
-    width: 50vw!important;
-    margin: auto;
+#custom-map {
+  margin: 4em auto;
+  height: 40vh !important;
+  width: 80vw !important;
+  border: 5px solid #a461d8;
+  border-radius: 10px;
 }
 
-html,
-body,
-#root { 
-  height: 100%;
-}
-
-#map {
-  height: 50%;
-}
-
-.mapouter {
-    position:relative;
-    text-align:center;
-    height:500px;
-    width:700px;
-}
-
-.gmap_canvas {
-    overflow:hidden;
-    background:none!important;
-    height:500px;
-    width:700px;
+.entries-title {
+  padding-top: 2em;
 }

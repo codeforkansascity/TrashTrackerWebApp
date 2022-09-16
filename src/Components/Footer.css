@@ -1,12 +1,11 @@
 /* Footer */
+
 #footer {
-    background-color: #ff971d;
-    padding: 1rem;
+  margin-top: 2em;
 }
-  
+
 .foot-note {
-    color: white;
-    font-weight: 700;
-    text-align: center;
+  font-size: 0.75rem;
+  color: rgb(161, 161, 161);
+  text-align: center;
 }
-  
