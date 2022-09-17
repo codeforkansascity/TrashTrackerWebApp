@@ -1,3 +1,6 @@
+// Here is some code that might be better than the solution we currently use. Added it here for future reference:
+// https://stackoverflow.com/questions/70656687/react-dynamic-form-input/70657356#70657356
+
 import React, { useState, useEffect } from "react";
 import { Img } from "react-image";
 import "./Datatable.css";
@@ -6,26 +9,44 @@ import DefaultImage from "../assets/image-not-provided.svg";
 function DataEdit() {
   const [formData, setFormData] = useState([]); 
 
-  const handleTrashChange = (e) => { 
-    for (let i=0; i<formData.length; i++) {
-      if (e.target.name === formData[i].body) { // Filter the specific report where a trash report is edited
-        if (e.target.className === "form-control trash") { // Identify whether user edited trash name or location
-          formData[i].trash_name = e.target.value
-          return
-        } else {
-          return formData[i].location = e.target.value
-        }
-      }
-    }
-  }
+  const url = "https://9gdq2gvn61.execute-api.us-east-2.amazonaws.com/staging/twilio/body";
 
+  // Fetch data for editing entries
   useEffect(() => {
-    fetch("https://9gdq2gvn61.execute-api.us-east-2.amazonaws.com/staging/twilio/body")
+    fetch(url)
     .then((res) => res.json())
     .then((reports) => setFormData(reports))
     .catch(err => console.error(err));
-  },[]) // [] indicates that useEffect doesn't depend on state or props so it won't rerender if state changes and will only fire once when component is rendered
- 
+  },[]) // [] indicates that useEffect will only fire once when component is rendered (it won't rerender if state changes)
+
+  // Add function that update formData and send PUT request to the database
+  const updateDatabase = (e) => {
+    for (let i=0; i<formData.length; i++) {
+      if (e.target.id === formData[i].body) { // Filter the specific report where a trash report is edited
+        // Update the state of trash name, location, and PUT request options
+        formData[i].trash_name = document.getElementsByClassName("trash")[i].value;
+        formData[i].location = document.getElementsByClassName("location")[i].value;
+        let requestOptions = {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData[i])
+        };
+
+        console.log(typeof requestOptions.body);
+        // Send PUT request to DynamoDB
+        fetch(url, requestOptions)
+          .then((response) => response.json())
+          .then((data) => {
+            console.log('Success:', data);
+            alert("Success! Please refresh the page to view your changes.")
+          })
+          .catch(error => {
+              console.error('Error:', error);
+          });
+      }
+    }
+  };
+
   return (
     <div>
       <table className="table table-borderless">
@@ -50,10 +71,10 @@ function DataEdit() {
                 />
               </td>
               <td>
-                <textarea name={element.body} type="text" className="form-control location" defaultValue={element.location} onChange={handleTrashChange}></textarea>
+                <textarea name={element.body} type="text" className="form-control location" defaultValue={element.location}></textarea>
               </td>
               <td>
-                <textarea name={element.body} type="text" className="form-control trash" defaultValue={element.trash_name} onChange={handleTrashChange}></textarea>
+                <textarea name={element.body} type="text" className="form-control trash" defaultValue={element.trash_name}></textarea>
               </td>
               <td>
                 {element.report_from.slice(2, 5) +
@@ -64,7 +85,7 @@ function DataEdit() {
               </td>
               <td>{element.report_date.slice(0, 10)}</td>
               <td>
-                <button className="btn btn-sm btn-primary" onClick={setFormData}>Update Data</button>
+                <button className="btn btn-sm btn-primary" id={element.body} onClick={updateDatabase}>Update Data</button>
               </td>
             </tr>
           ))}
