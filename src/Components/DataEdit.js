@@ -11,7 +11,7 @@ function DataEdit() {
 
   const url = "https://9gdq2gvn61.execute-api.us-east-2.amazonaws.com/staging/twilio/body";
 
-  // Fetch data for editing entries
+  // Fetch data for editing entries when the component is mounted
   useEffect(() => {
     fetch(url)
     .then((res) => res.json())
@@ -20,7 +20,7 @@ function DataEdit() {
   },[]) // [] indicates that useEffect will only fire once when component is rendered (it won't rerender if state changes)
 
   // Add function that update formData and send PUT request to the database
-  const updateDatabase = (e) => {
+  const updateTrashAndLocation = (e) => {
     for (let i=0; i<formData.length; i++) {
       if (e.target.id === formData[i].body) { // Filter the specific report where a trash report is edited
         // Update the state of trash name, location, and PUT request options
@@ -29,7 +29,7 @@ function DataEdit() {
         let requestOptions = {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(formData[i])
+          body: formData[i]
         };
 
         console.log(typeof requestOptions.body);
@@ -42,6 +42,7 @@ function DataEdit() {
           })
           .catch(error => {
               console.error('Error:', error);
+              alert("Something went wrong! Please contact the administrator.")
           });
       }
     }
@@ -71,10 +72,10 @@ function DataEdit() {
                 />
               </td>
               <td>
-                <textarea name={element.body} type="text" className="form-control location" defaultValue={element.location}></textarea>
+                <textarea type="text" className="form-control location" defaultValue={element.location}></textarea>
               </td>
               <td>
-                <textarea name={element.body} type="text" className="form-control trash" defaultValue={element.trash_name}></textarea>
+                <textarea type="text" className="form-control trash" defaultValue={element.trash_name}></textarea>
               </td>
               <td>
                 {element.report_from.slice(2, 5) +
@@ -85,7 +86,7 @@ function DataEdit() {
               </td>
               <td>{element.report_date.slice(0, 10)}</td>
               <td>
-                <button className="btn btn-sm btn-primary" id={element.body} onClick={updateDatabase}>Update Data</button>
+                <button className="btn btn-sm btn-primary" id={element.body} onClick={updateTrashAndLocation}>Update Data</button>
               </td>
             </tr>
           ))}
