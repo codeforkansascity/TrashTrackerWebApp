@@ -22,7 +22,9 @@ const Home = () => {
 
       {/* <Datafilter /> */}
       <Datatable5 />
-      {/* <DataEdit /> */}
+
+      <p className="report-status entries-title">Edit Entries</p>
+      <DataEdit />
       {/* <PrintMap /> */}
       <Footer />
     </div>
