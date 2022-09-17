@@ -25,17 +25,19 @@ function DataEdit() {
       if (e.target.id === formData[i].body) { // Filter the specific report where a trash report is edited
         // Update the state of trash name, location, and PUT request options
         formData[i].trash_name = document.getElementsByClassName("trash")[i].value;
+        console.log(document.getElementsByClassName("trash")[i].value);
         formData[i].location = document.getElementsByClassName("location")[i].value;
         let requestOptions = {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
+          'Access-Control-Allow-Origin': 'request-originating server addresses',
           body: formData[i]
         };
 
         console.log(typeof requestOptions.body);
         // Send PUT request to DynamoDB
         fetch(url, requestOptions)
-          .then((response) => response.json())
+          // .then((response) => response.json())
           .then((data) => {
             console.log('Success:', data);
             alert("Success! Please refresh the page to view your changes.")
@@ -68,7 +70,7 @@ function DataEdit() {
                 <Img
                   src={[element.photo_url, DefaultImage]}
                   alt="not available"
-                  class="custom-photo"
+                  className="custom-photo"
                 />
               </td>
               <td>
