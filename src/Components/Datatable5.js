@@ -4,6 +4,28 @@ import "./Datatable.css";
 import DefaultImage from "../assets/image-not-provided.svg";
 import Loader from "../assets/loader.gif";
 
+const openModal = () => {
+  var modal = document.getElementById("my-modal");
+  var overlay = document.getElementById("overlay");
+  var btnCloseModal = document.getElementsByClassName("close-modal");
+
+  const closeModal = function () {
+    modal.classList.add("hidden");
+    overlay.classList.add("hidden");
+  };
+
+  //   btnCloseModal.addEventListener("click");
+  //   overlay.addEventListener("click", closeModal);
+
+  document.addEventListener("keydown", function (e) {
+    // console.log(e.key);
+
+    if (e.key === "Escape" && !modal.classList.contains("hidden")) {
+      closeModal();
+    }
+  });
+};
+
 class Datatable extends React.Component {
   constructor(props) {
     super(props);
@@ -58,7 +80,8 @@ class Datatable extends React.Component {
                       <Img
                         src={[item.photo_url, DefaultImage]}
                         alt="not available"
-                        class="custom-photo"
+                        className="custom-photo"
+                        onClick={openModal}
                       />
                     </td>
                     <td>{item.location.slice(9)}</td>
@@ -78,6 +101,21 @@ class Datatable extends React.Component {
                     <td>
                       <button className="btn-del">Edit</button>
                     </td>
+                    <div className="dynamic-modal">
+                      <div className="hidden modal" id="my-modal">
+                        <button className="" id="close-modal">
+                          &times;
+                        </button>
+                        <div id="modal-content">
+                          <Img
+                            className="modal-img"
+                            src={[item.photo_url, DefaultImage]}
+                            alt="Full Size Image"
+                          />
+                        </div>
+                        <div className="hidden" id="overlay"></div>
+                      </div>
+                    </div>
                   </tr>
                 ))}
               </tbody>
