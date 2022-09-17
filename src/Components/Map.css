@@ -3,6 +3,7 @@
   margin: 4em auto;
   height: 40vh !important;
   width: 80vw !important;
+  max-width: 1190px;
   border: 5px solid #a461d8;
   border-radius: 10px;
 }
