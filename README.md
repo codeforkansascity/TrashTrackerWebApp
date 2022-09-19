@@ -12,6 +12,8 @@ Trash Tracker is a simple, lightweight system that allows residents and staff of
 * Install [Node](https://nodejs.org/en/download/) 
 * Install [Amplify Cli](https://docs.amplify.aws/cli/start/install/)
 
+Project Overview documentation: https://drive.google.com/drive/u/1/folders/14qqiA9uD3zp39l-9RSnm3Br4Vc3_R6gQ
+
 ## Local Development
 1. Install dependencies
 
