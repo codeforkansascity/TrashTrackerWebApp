@@ -32,7 +32,7 @@ function DataEdit() {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           'Access-Control-Allow-Origin': 'request-originating server addresses',
-          body: formData[i]
+          body: JSON.stringify(formData[i])
         };
 
         console.log(typeof requestOptions.body);
