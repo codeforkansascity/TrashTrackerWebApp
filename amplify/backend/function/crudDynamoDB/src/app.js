@@ -63,7 +63,7 @@ const convertUrlType = (param, type) => {
 }
 
 /********************************
- * HTTP Get method for list objects * e.g., /twilio/:body
+ * HTTP Get method for list objects * e.g., /twilio/body
  ********************************/
 
 app.get(path + hashKeyPath, function(req, res) {
@@ -99,7 +99,7 @@ app.get(path + hashKeyPath, function(req, res) {
 });
 
 /*****************************************
- * HTTP Get method for get single object * e.g., /twilio/object/:body/:report_date
+ * HTTP Get method for get single object * e.g., /twilio/object/body/report_date
  *****************************************/
 
 app.get(path + '/object' + hashKeyPath + sortKeyPath, function(req, res) {
