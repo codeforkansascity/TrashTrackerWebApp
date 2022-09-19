@@ -9,11 +9,12 @@ import DefaultImage from "../assets/image-not-provided.svg";
 function DataEdit() {
   const [formData, setFormData] = useState([]); 
 
-  const url = "https://9gdq2gvn61.execute-api.us-east-2.amazonaws.com/staging/twilio/body";
+  const getUrl = "https://9gdq2gvn61.execute-api.us-east-2.amazonaws.com/staging/twilio/body";
+  const putUrl = "https://9gdq2gvn61.execute-api.us-east-2.amazonaws.com/staging/twilio";
 
   // Fetch data for editing entries when the component is mounted
   useEffect(() => {
-    fetch(url)
+    fetch(getUrl)
     .then((res) => res.json())
     .then((reports) => setFormData(reports))
     .catch(err => console.error(err));
@@ -36,7 +37,7 @@ function DataEdit() {
 
         console.log(typeof requestOptions.body);
         // Send PUT request to DynamoDB
-        fetch(url, requestOptions)
+        fetch(putUrl, requestOptions)
           // .then((response) => response.json())
           .then((data) => {
             console.log('Success:', data);
