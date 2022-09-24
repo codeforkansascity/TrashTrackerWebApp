@@ -11,6 +11,7 @@ function DataEdit() {
 
   const getUrl = "https://9gdq2gvn61.execute-api.us-east-2.amazonaws.com/staging/twilio/body";
   const putUrl = "https://9gdq2gvn61.execute-api.us-east-2.amazonaws.com/staging/twilio";
+  const deleteUrl = "https://9gdq2gvn61.execute-api.us-east-2.amazonaws.com/staging/twilio/object/body/report_date";
 
   // Fetch data for editing entries when the component is mounted
   useEffect(() => {
@@ -26,7 +27,6 @@ function DataEdit() {
       if (e.target.id === formData[i].body) { // Filter the specific report where a trash report is edited
         // Update the state of trash name, location, and PUT request options
         formData[i].trash_name = document.getElementsByClassName("trash")[i].value;
-        console.log(document.getElementsByClassName("trash")[i].value);
         formData[i].location = document.getElementsByClassName("location")[i].value;
         let requestOptions = {
           method: 'PUT',
@@ -35,10 +35,9 @@ function DataEdit() {
           body: JSON.stringify(formData[i])
         };
 
-        console.log(typeof requestOptions.body);
         // Send PUT request to DynamoDB
         fetch(putUrl, requestOptions)
-          // .then((response) => response.json())
+          .then((response) => response.json())
           .then((data) => {
             console.log('Success:', data);
             alert("Success! Please refresh the page to view your changes.")
@@ -50,6 +49,25 @@ function DataEdit() {
       }
     }
   };
+
+  const deleteReport = (e) => {
+    let requestOptions = {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({"body": "SM06586c375e2690fb2442f74c243af649"})
+    };
+
+    fetch(deleteUrl, requestOptions)
+    .then((response) => response.json())
+    .then((data) => {
+      console.log('Success:', data);
+      alert("Success! Please refresh the page to view your changes.")
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert("Something went wrong! Please contact the administrator.")
+    });
+  }
 
   return (
     <div>
@@ -75,7 +93,7 @@ function DataEdit() {
                 />
               </td>
               <td>
-                <textarea type="text" className="form-control location" defaultValue={element.location}></textarea>
+                <textarea type="text" className="form-control location" defaultValue={element.body}></textarea>
               </td>
               <td>
                 <textarea type="text" className="form-control trash" defaultValue={element.trash_name}></textarea>
@@ -89,7 +107,8 @@ function DataEdit() {
               </td>
               <td>{element.report_date.slice(0, 10)}</td>
               <td>
-                <button className="btn btn-sm btn-primary" id={element.body} onClick={updateTrashAndLocation}>Update Data</button>
+                <button className="btn btn-sm btn-primary" id={element.body} onClick={updateTrashAndLocation}>Update</button>
+                <button className="btn btn-sm btn-primary" id={element.body} onClick={deleteReport}>Delete</button>
               </td>
             </tr>
           ))}
