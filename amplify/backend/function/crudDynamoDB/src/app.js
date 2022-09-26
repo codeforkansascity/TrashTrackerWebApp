@@ -86,7 +86,11 @@ app.get(path + hashKeyPath, function(req, res) {
   let queryParams = {
     TableName: tableName,
     KeyConditions: condition,
-    FilterExpression: '#status <> :completed',
+    FilterExpression: '#name <> :name', // added the filter that only returns items that their status is not equal to "completed"
+    ExpressionAttributeNames: { "#name": "status" }, // in the future, we may want to use something else other than filter expressions
+    ExpressionAttributeValues: {
+      ':name':"completed"
+}
   }
 
   dynamodb.scan(queryParams, (err, data) => {

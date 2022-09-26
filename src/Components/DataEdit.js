@@ -55,7 +55,6 @@ const DataEdit = () => {
       if (e.target.id === formData[i].body) { // Filter the specific report where a trash report is edited
         // Update the state of trash name, location, and PUT request options
         formData[i].status = "completed";
-        console.log(formData[i]);
         let requestOptions = {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
@@ -99,10 +98,10 @@ const DataEdit = () => {
                 />
               </td>
               <td>
-                <textarea type="text" className="form-control location" defaultValue={element.body}></textarea>
+                <textarea type="text" className="form-control location" defaultValue={element.location}></textarea>
               </td>
               <td>
-                <textarea type="text" className="form-control trash" defaultValue={element.report_date}></textarea>
+                <textarea type="text" className="form-control trash" defaultValue={element.trash_name}></textarea>
               </td>
               <td>
                 {element.report_from.slice(2, 5) +
@@ -113,7 +112,7 @@ const DataEdit = () => {
               </td>
               <td>{element.report_date.slice(0, 10)}</td>
               <td>
-                <button className="btn btn-sm btn-primary" id={element.body} onClick={updateTrashAndLocation}>Update</button>
+                <button className="btn btn-sm btn-primary" id={element.body} onClick={updateTrashAndLocation}>Update</button>&nbsp; 
                 <button className="btn btn-sm btn-danger" id={element.body} onClick={hideReport}>Delete</button>
               </td>
             </tr>
