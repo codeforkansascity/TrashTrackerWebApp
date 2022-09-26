@@ -70,7 +70,7 @@ class Datatable extends React.Component {
                   <th scope="col">Description</th>
                   <th scope="col">Phone</th>
                   <th scope="col">Date</th>
-                  <th scope="col"></th>
+                  <th scope="col">Status</th>
                 </tr>
               </thead>
               <tbody id="data-table">
@@ -99,7 +99,7 @@ class Datatable extends React.Component {
                     </td>
                     <td>{item.report_date.slice(0, 10)}</td>
                     <td>
-                      <button className="btn-del">Edit</button>
+                      <button className="btn-del">New</button>
                     </td>
                     <div className="dynamic-modal">
                       <div className="hidden modal" id="my-modal">

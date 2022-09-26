@@ -1,5 +1,5 @@
-import React from "react";
-import Datafilter from "./Datafilter";
+import React, {useState} from "react";
+// import Datafilter from "./Datafilter";
 import Datatable5 from "./Datatable5";
 import DataEdit from "./DataEdit";
 import Footer from "./Footer";
@@ -8,6 +8,8 @@ import Map from "./Map";
 import PrintReportBtn from "../assets/print-icon.svg";
 
 const Home = () => {
+  const [editMode, setEditMode] = useState(false);
+
   return (
     <div className="custom-container">
       <div className="print-report">
@@ -18,13 +20,18 @@ const Home = () => {
       </div>
       <Map />
 
-      <p className="report-status entries-title">Received Entries</p>
-
+      <p className="report-status entries-title">
+        Received Entries
+        <button className="btn btn-sm btn-warning ms-4" onClick={() => editMode ? setEditMode(false) : setEditMode(true)}>{ editMode ? "Go Back" : "Group Edits"}</button>
+      </p>
+      {
+        editMode ?
+        <DataEdit />
+        :
+        <Datatable5 />        
+      }
+      
       {/* <Datafilter /> */}
-      <Datatable5 />
-
-      <p className="report-status entries-title">Edit Entries</p>
-      <DataEdit />
       {/* <PrintMap /> */}
       <Footer />
     </div>
