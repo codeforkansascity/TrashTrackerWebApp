@@ -121,6 +121,16 @@
   max-width: 100px;
 }
 
+.btn-status {
+  font-size: 0.875rem;
+  background-color: #1e75ff10;
+  color: #1e75ff;
+  padding: 0.2rem 1rem;
+  cursor: default!important;
+  float: left;
+  border: none;
+}
+
 .btn-view,
 .btn-del,
 .btn-mark {

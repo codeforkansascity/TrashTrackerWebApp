@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import Datafilter from "./Datafilter";
+// import Datafilter from "./Datafilter";
 import Datatable from "./Datatable";
 import DataEdit from "./DataEdit";
 import Footer from "./Footer";
@@ -10,11 +10,15 @@ import PrintReportBtn from "../assets/print-icon.svg";
 const Home = () => {
   const [editMode, setEditMode] = useState(false);
 
+  const print = () => {
+    window.print();
+  };
+
   return (
     <div className="custom-container">
       <div className="print-report">
         <p className="report-status">Search Location</p>
-        <button className="print-report-btn">
+        <button className="print-report-btn"  onClick={print}>
           <img src={PrintReportBtn} alt="" />
         </button>
       </div>
@@ -27,7 +31,7 @@ const Home = () => {
         </button>
       </p>
 
-      <Datafilter />
+      {/* <Datafilter /> */}
 
       {/* Display data upon loading the page; show edit areas when users clicked on Edit button */}
       {
