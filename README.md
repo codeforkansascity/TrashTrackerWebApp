@@ -8,11 +8,11 @@ The Kansas City region has an ugly trash problem. All across the city, especiall
 
 Trash Tracker is a simple, lightweight system that allows residents and staff of the Lykins neighborhood to report illegal dumping with a simple text message and allows admin to view reports and search trash locations so that they can arrange staff and volunteers to clean up the trash.
 
+Project overview documentation: https://drive.google.com/drive/u/1/folders/14qqiA9uD3zp39l-9RSnm3Br4Vc3_R6gQ
+
 ## Prerequisites
 * Install [Node](https://nodejs.org/en/download/) 
 * Install [Amplify Cli](https://docs.amplify.aws/cli/start/install/)
-
-Project Overview documentation: https://drive.google.com/drive/u/1/folders/14qqiA9uD3zp39l-9RSnm3Br4Vc3_R6gQ
 
 ## Local Development
 1. Install dependencies

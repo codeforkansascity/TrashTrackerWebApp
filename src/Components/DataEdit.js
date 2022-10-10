@@ -82,7 +82,7 @@ const DataEdit = () => {
             <th scope="col" className="thumb-col"></th>
             <th scope="col">Location</th>
             <th scope="col">Description</th>
-            <th scope="col">Phone</th>
+            <th scope="col">Reported by</th>
             <th scope="col">Date</th>
             <th scope="col"></th>
           </tr>
@@ -91,11 +91,13 @@ const DataEdit = () => {
           {formData.map((element) => (
             <tr className="data-row">
               <td>
-                <Img
-                  src={[element.photo_url, DefaultImage]}
-                  alt="not available"
-                  className="custom-photo"
-                />
+                <a href={element.photo_url} target="_blank">
+                  <Img
+                    src={[element.photo_url, DefaultImage]}
+                    alt="not available"
+                    className="custom-photo"
+                  />
+                </a>
               </td>
               <td>
                 <textarea type="text" className="form-control location" defaultValue={element.location}></textarea>

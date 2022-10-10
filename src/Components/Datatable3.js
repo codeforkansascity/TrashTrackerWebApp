@@ -1,58 +1,134 @@
-// This file can successfully input data to DynamoDB if we put the real rest api endpoint in. 
-import React, { Component } from 'react';
-import axios from 'axios';
+// This file contains the modal that Leo is still developing and the loader Leo added
+import React from "react";
+import { Img } from "react-image";
+import "./Datatable.css";
+import DefaultImage from "../assets/image-not-provided.svg";
+import Loader from "../assets/loader.gif";
 
-export default class Datatable3 extends Component {
+const openModal = () => {
+  var modal = document.getElementById("my-modal");
+  var overlay = document.getElementById("overlay");
+  var btnCloseModal = document.getElementsByClassName("close-modal");
+
+  const closeModal = function () {
+    modal.classList.add("hidden");
+    overlay.classList.add("hidden");
+  };
+
+  //   btnCloseModal.addEventListener("click");
+  //   overlay.addEventListener("click", closeModal);
+
+  document.addEventListener("keydown", function (e) {
+    // console.log(e.key);
+
+    if (e.key === "Escape" && !modal.classList.contains("hidden")) {
+      closeModal();
+    }
+  });
+};
+
+class Datatable extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      body: '',
-      report_date: '',
-    };
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-  }
 
-  handleChange(event) {
-    const inputValue = event.target.value;
-    const stateField = event.target.name;
-    this.setState({
-      [stateField]: inputValue,
-    });
-    console.log(this.state);
+    this.state = {
+      items: [],
+      DataisLoaded: false,
+    };
   }
-  async handleSubmit(event) {
-    event.preventDefault();
-    const { body, report_date } = this.state;
-    await axios.post(
-      'REST_API_ENDPOINT', // to-do: change to the real endpoint here
-      { body: `${body}`, report_date: `${report_date}` }
-    );
+  componentDidMount() {
+    fetch(
+      "https://9gdq2gvn61.execute-api.us-east-2.amazonaws.com/staging/twilio/body"
+    )
+      .then((res) => res.json())
+      .then((reports) => {
+        this.setState({
+          items: reports,
+          DataisLoaded: true,
+        });
+      });
   }
 
   render() {
+    const { DataisLoaded, items } = this.state;
+    if (!DataisLoaded)
+      return (
+        <div className="loader">
+          <h5>Loading table.... </h5>
+          <img src={Loader} alt="loading" />
+        </div>
+      );
+
     return (
-      <div>
-        <form onSubmit={this.handleSubmit}>
-          <label>Body:</label>
-          <input
-            type="text"
-            name="body"
-            onChange={this.handleChange}
-            value={this.state.body}
-          />
+      <section id="main-table">
+        <div className="container">
+          <div className="row">
+            <table className="table table-borderless">
+              <thead>
+                <tr>
+                  <th scope="col" className="thumb-col"></th>
+                  <th scope="col">Location</th>
+                  <th scope="col">Description</th>
+                  <th scope="col">Reported by</th>
+                  <th scope="col">Date</th>
+                  <th scope="col">Status</th>
+                </tr>
+              </thead>
+              <tbody id="data-table">
+                {items.map((item) => (
+                  <tr className="data-row">
+                    <td>
+                      <Img
+                        src={[item.photo_url, DefaultImage]}
+                        alt="not available"
+                        className="custom-photo"
+                        onClick={openModal}
+                      />
+                    </td>
+                    <td>
+                      {item.location.charAt(0).toUpperCase() +
+                        item.location.slice(1)}
+                    </td>
+                    <td>
+                      {item.trash_name.charAt(0).toUpperCase() +
+                        item.trash_name.slice(1)}
+                    </td>
 
-          <label>Report Date:</label>
-          <input
-            type="text"
-            name="report_date"
-            onChange={this.handleChange}
-            value={this.state.report_date}
-          />
-
-          <button type="submit">Send</button>
-        </form>
-      </div>
+                    <td>
+                      {item.report_from.slice(2, 5) +
+                        "-" +
+                        item.report_from.slice(5, 8) +
+                        "-" +
+                        item.report_from.slice(8)}
+                    </td>
+                    <td>{item.report_date.slice(0, 10)}</td>
+                    <td>
+                      <button className="btn-del">New</button>
+                    </td>
+                    <div className="dynamic-modal">
+                      <div className="hidden modal" id="my-modal">
+                        <button className="" id="close-modal">
+                          &times;
+                        </button>
+                        <div id="modal-content">
+                          <Img
+                            className="modal-img"
+                            src={[item.photo_url, DefaultImage]}
+                            alt="Full Size Image"
+                          />
+                        </div>
+                        <div className="hidden" id="overlay"></div>
+                      </div>
+                    </div>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
     );
   }
 }
+
+export default Datatable;

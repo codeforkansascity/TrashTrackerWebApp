@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import Datafilter from "./Datafilter";
-import Datatable5 from "./Datatable5";
+import Datatable from "./Datatable";
 import DataEdit from "./DataEdit";
 import Footer from "./Footer";
 // import PrintMap from './PrintMap';
@@ -23,18 +23,18 @@ const Home = () => {
       <p className="report-status entries-title">
         Received Entries
         <button className="btn btn-sm btn-warning ms-4" onClick={() => editMode ? setEditMode(false) : setEditMode(true)}>
-          {editMode ? "Go Back" : "Group Edits"}
+          {editMode ? "Go Back" : "Edit"}
         </button>
       </p>
 
       <Datafilter />
 
-      {/* Display data upon loading the page; show edit areas when users clicked on Group Edits button */}
+      {/* Display data upon loading the page; show edit areas when users clicked on Edit button */}
       {
         editMode ?
         <DataEdit />
         :
-        <Datatable5 />        
+        <Datatable />        
       }
       
       {/* <PrintMap /> */}
