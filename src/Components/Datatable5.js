@@ -84,7 +84,7 @@ class Datatable extends React.Component {
                         onClick={openModal}
                       />
                     </td>
-                    <td>{item.location.slice(9)}</td>
+                    <td>{item.location}</td>
                     <td>
                       {item.trash_name.charAt(0).toUpperCase() +
                         item.trash_name.slice(1)}
