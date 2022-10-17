@@ -16,6 +16,14 @@ const Datatable = () => {
     .catch(err => console.error(err));
   },[]) // [] indicates that useEffect will only fire once when component is rendered (it won't rerender if state changes)
 
+  const date = new Date();
+
+  let month = date.getMonth() + 1;
+  let year = date.getFullYear();
+  
+  let currentDate = `${year}-${month}`;
+  console.log(currentDate); 
+
   return (
     <div>
       <div class="col-6 mt-2 mb-5 mx-auto">

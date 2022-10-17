@@ -38,6 +38,7 @@ const path = "/twilio";
 const UNAUTH = 'UNAUTH';
 const hashKeyPath = '/' + partitionKeyName; 
 const sortKeyPath = hasSortKey ? '/' + sortKeyName : '';
+const customKeyPath = "/date";
 
 // declare a new express app
 const app = express()
@@ -86,8 +87,7 @@ app.get(path + hashKeyPath, function(req, res) {
   let queryParams = {
     TableName: tableName,
     KeyConditions: condition,
-    FilterExpression: '#name <> :name', // added the filter that only returns items that their status is not equal to "completed"
-    ExpressionAttributeNames: { "#name": "status" }, // in the future, we may want to use something else other than filter expressions
+    FilterExpression: 'status <> :name', // added the filter that only returns items that their status is not equal to "completed"
     ExpressionAttributeValues: {
       ':name':"completed"
 }
@@ -102,6 +102,29 @@ app.get(path + hashKeyPath, function(req, res) {
     }
   });
 });
+
+/********************************
+ * HTTP Get method for list objects in a date range * e.g., /twilio/date
+ ********************************/
+
+app.get(path + customKeyPath, function(req, res) {
+  let queryParams = {
+    TableName: tableName,
+    FilterExpression: "contains(report_date, :date) AND status <> :name",
+    ExpressionAttributeValues: {
+      ":date": "2022-9"
+    }
+  }
+
+  dynamodb.scan(queryParams, (err, data) => {
+    if (err) {
+      res.statusCode = 500;
+      res.json({error: 'Could not load items: ' + err});
+    } else {
+      res.json(data.Items);
+    }
+  })
+})
 
 /*****************************************
  * HTTP Get method for get single object * e.g., /twilio/object/body/report_date
