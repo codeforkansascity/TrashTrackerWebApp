@@ -108,8 +108,25 @@ app.get(path + hashKeyPath, function(req, res) {
  ********************************/
 
 app.get(path + customKeyPath, function(req, res) {
+  const condition = {}
+  condition[partitionKeyName] = {
+    ComparisonOperator: 'EQ'
+  }
+
+  if (userIdPresent && req.apiGateway) {
+    condition[partitionKeyName]['AttributeValueList'] = [req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH ];
+  } else {
+    try {
+      condition[partitionKeyName]['AttributeValueList'] = [ convertUrlType(req.params[partitionKeyName], partitionKeyType) ];
+    } catch(err) {
+      res.statusCode = 500;
+      res.json({error: 'Wrong column type ' + err});
+    }
+  }
+
   let queryParams = {
     TableName: tableName,
+    KeyConditions: condition,
     FilterExpression: "contains(report_date, :date) AND status <> :name",
     ExpressionAttributeValues: {
       ":date": "2022-9"

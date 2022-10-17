@@ -18,10 +18,10 @@ const Datatable = () => {
 
   const date = new Date();
 
-  let month = date.getMonth() + 1;
-  let year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear();
   
-  let currentDate = `${year}-${month}`;
+  const currentDate = `${year}-${month}`;
   console.log(currentDate); 
 
   return (
@@ -29,12 +29,10 @@ const Datatable = () => {
       <div class="col-6 mt-2 mb-5 mx-auto">
         <label for="formGroupExampleInput" class="form-label">Date Filters</label>
         <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-          <option selected>Past 30 Days</option>
-          <option value="1">Past 2 Months</option>
-          <option value="2">Past 3 Months</option>
-          <option value="3">Past 4 Months</option>
-          <option value="4">Past 5 Months</option>
-          <option value="5">Past 6 Months</option>
+          <option selected> </option>
+          <option value="1">Past 1 Month</option>
+          <option value="2">Past 2 Months</option>
+          <option value="3">Past 3 Months</option>
         </select>
       </div>
       <table className="table table-borderless">
@@ -52,7 +50,7 @@ const Datatable = () => {
           {formData.map((element) => (
             <tr className="data-row">
               <td>
-                <a href={element.photo_url} target="_blank">
+                <a href={element.photo_url} target="_blank" rel="noreferrer">
                   <Img
                     src={[element.photo_url, DefaultImage]}
                     alt="not available"
