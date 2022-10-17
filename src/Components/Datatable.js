@@ -29,7 +29,8 @@ const Datatable = () => {
       <div class="col-6 mt-2 mb-5 mx-auto">
         <label for="formGroupExampleInput" class="form-label">Date Filters</label>
         <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-          <option selected> </option>
+          <option selected>Select</option>
+          <option value="0">Current Month</option>
           <option value="1">Past 1 Month</option>
           <option value="2">Past 2 Months</option>
           <option value="3">Past 3 Months</option>

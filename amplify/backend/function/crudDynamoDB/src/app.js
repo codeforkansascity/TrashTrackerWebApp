@@ -140,7 +140,7 @@ app.get(path + customKeyPath, function(req, res) {
   let queryParams = {
     TableName: tableName,
     KeyConditions: condition,
-    FilterExpression: "contains(#report_date, :date) AND #status <> :status",
+    FilterExpression: "begins_with(#report_date, :date) AND #status <> :status",
     ExpressionAttributeNames: {
       "#report_date":"report_date",
       "#status":"status"
