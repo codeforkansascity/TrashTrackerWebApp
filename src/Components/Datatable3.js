@@ -38,7 +38,7 @@ class Datatable extends React.Component {
   }
   componentDidMount() {
     fetch(
-      "https://9gdq2gvn61.execute-api.us-east-2.amazonaws.com/staging/twilio/body"
+      "https://9gdq2gvn61.execute-api.us-east-2.amazonaws.com/staging/twilio/date"
     )
       .then((res) => res.json())
       .then((reports) => {

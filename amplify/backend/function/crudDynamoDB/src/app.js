@@ -49,7 +49,7 @@ app.use(awsServerlessExpressMiddleware.eventContext())
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*")
   res.header("Access-Control-Allow-Headers", "*")
-  res.header("Access-Control-Allow-Methods", "PUT,DELETE")
+  res.header("Access-Control-Allow-Methods", "PUT,DELETE,GET")
   next()
 });
 

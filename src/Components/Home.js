@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 // import Datafilter from "./Datafilter";
 import Datatable from "./Datatable";
+import Datatable3 from "./Datatable3";
 import DataEdit from "./DataEdit";
 import Footer from "./Footer";
 // import PrintMap from './PrintMap';
@@ -40,7 +41,7 @@ const Home = () => {
         :
         <Datatable />        
       }
-      
+        <Datatable3 />    
       {/* <PrintMap /> */}
       <Footer />
     </div>
