@@ -84,24 +84,24 @@ app.get(path + hashKeyPath, function(req, res) {
     }
   }
 
-  // let queryParams = {
-  //   TableName: tableName,
-  //   KeyConditions: condition,
-  //   FilterExpression: 'status <> :name', // added the filter that only returns items that their status is not equal to "completed"
-  //   ExpressionAttributeValues: {
-  //     ':name':"completed"
-  //   }
-  // }
-
   let queryParams = {
     TableName: tableName,
     KeyConditions: condition,
-    FilterExpression: "contains(report_date, :date) AND status <> :name",
+    FilterExpression: 'status <> :name', // added the filter that only returns items that their status is not equal to "completed"
     ExpressionAttributeValues: {
-      ':name':"completed",
-      ":date": "2022-9"
+      ':name':"completed"
     }
   }
+
+  // let queryParams = {
+  //   TableName: tableName,
+  //   KeyConditions: condition,
+  //   FilterExpression: "contains(report_date, :date) AND status <> :name",
+  //   ExpressionAttributeValues: {
+  //     ':name':"completed",
+  //     ":date": "2022-9"
+  //   }
+  // }
 
   dynamodb.scan(queryParams, (err, data) => {
     if (err) {
