@@ -84,13 +84,23 @@ app.get(path + hashKeyPath, function(req, res) {
     }
   }
 
+  // let queryParams = {
+  //   TableName: tableName,
+  //   KeyConditions: condition,
+  //   FilterExpression: 'status <> :name', // added the filter that only returns items that their status is not equal to "completed"
+  //   ExpressionAttributeValues: {
+  //     ':name':"completed"
+  //   }
+  // }
+
   let queryParams = {
     TableName: tableName,
     KeyConditions: condition,
-    FilterExpression: 'status <> :name', // added the filter that only returns items that their status is not equal to "completed"
+    FilterExpression: "contains(report_date, :date) AND status <> :name",
     ExpressionAttributeValues: {
-      ':name':"completed"
-}
+      ':name':"completed",
+      ":date": "2022-9"
+    }
   }
 
   dynamodb.scan(queryParams, (err, data) => {
@@ -107,41 +117,42 @@ app.get(path + hashKeyPath, function(req, res) {
  * HTTP Get method for list objects in a date range * e.g., /twilio/date
  ********************************/
 
-app.get(path + customKeyPath, function(req, res) {
-  const condition = {}
-  condition[partitionKeyName] = {
-    ComparisonOperator: 'EQ'
-  }
+// app.get(path + customKeyPath, function(req, res) {
+//   const condition = {}
+//   condition[partitionKeyName] = {
+//     ComparisonOperator: 'EQ'
+//   }
 
-  if (userIdPresent && req.apiGateway) {
-    condition[partitionKeyName]['AttributeValueList'] = [req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH ];
-  } else {
-    try {
-      condition[partitionKeyName]['AttributeValueList'] = [ convertUrlType(req.params[partitionKeyName], partitionKeyType) ];
-    } catch(err) {
-      res.statusCode = 500;
-      res.json({error: 'Wrong column type ' + err});
-    }
-  }
+//   if (userIdPresent && req.apiGateway) {
+//     condition[partitionKeyName]['AttributeValueList'] = [req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH ];
+//   } else {
+//     try {
+//       condition[partitionKeyName]['AttributeValueList'] = [ convertUrlType(req.params[partitionKeyName], partitionKeyType) ];
+//     } catch(err) {
+//       res.statusCode = 500;
+//       res.json({error: 'Wrong column type ' + err});
+//     }
+//   }
 
-  let queryParams = {
-    TableName: tableName,
-    KeyConditions: condition,
-    FilterExpression: "contains(report_date, :date) AND status <> :name",
-    ExpressionAttributeValues: {
-      ":date": "2022-9"
-    }
-  }
+//   let queryParams = {
+//     TableName: tableName,
+//     KeyConditions: condition,
+//     FilterExpression: "contains(report_date, :date) AND status <> :name",
+//     ExpressionAttributeValues: {
+//       ':name':"completed",
+//       ":date": "2022-9"
+//     }
+//   }
 
-  dynamodb.scan(queryParams, (err, data) => {
-    if (err) {
-      res.statusCode = 500;
-      res.json({error: 'Could not load items: ' + err});
-    } else {
-      res.json(data.Items);
-    }
-  })
-})
+//   dynamodb.scan(queryParams, (err, data) => {
+//     if (err) {
+//       res.statusCode = 500;
+//       res.json({error: 'Could not load items: ' + err});
+//     } else {
+//       res.json(data.Items);
+//     }
+//   })
+// })
 
 /*****************************************
  * HTTP Get method for get single object * e.g., /twilio/object/body/report_date
