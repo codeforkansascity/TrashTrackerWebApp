@@ -146,7 +146,7 @@ app.get(path + customKeyPath, function(req, res) {
       "#status":"status"
     },
     ExpressionAttributeValues: {
-      ":date": "2022-9",
+      ":date": "2022-09",
       ':status':"completed"
     }
   }

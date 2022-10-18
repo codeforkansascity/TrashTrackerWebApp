@@ -14,6 +14,8 @@ const Datatable = () => {
     .then((res) => res.json())
     .then((reports) => setFormData(reports))
     .catch(err => console.error(err));
+
+    console.log("currently selecting value....." + document.getElementById("#select"))
   },[]) // [] indicates that useEffect will only fire once when component is rendered (it won't rerender if state changes)
 
   const date = new Date();
@@ -24,11 +26,13 @@ const Datatable = () => {
   const currentDate = `${year}-${month}`;
   console.log(currentDate); 
 
+
+
   return (
     <div>
       <div class="col-6 mt-2 mb-5 mx-auto">
         <label for="formGroupExampleInput" class="form-label">Date Filters</label>
-        <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+        <select class="form-select form-select-lg mb-3" id="select" aria-label=".form-select-lg example">
           <option selected>Select</option>
           <option value="0">Current Month</option>
           <option value="1">Past 1 Month</option>
