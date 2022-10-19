@@ -10,13 +10,19 @@ const Datatable = () => {
 
   // Fetch data for editing entries when the component is mounted
   useEffect(() => {
-    fetch(getUrl)
+    getUrlFetch()
+  },[]) // [] indicates that useEffect will only fire once when component is rendered (it won't rerender if state changes)
+
+  const getUrlFetch = async () => {
+    await fetch(getUrl)
     .then((res) => res.json())
     .then((reports) => setFormData(reports))
     .catch(err => console.error(err));
-  },[]) // [] indicates that useEffect will only fire once when component is rendered (it won't rerender if state changes)
+
+    await filterReports();
+  }
   
-  useEffect(() => {
+  const filterReports = () => {
     let e = document.getElementById("select");
 
     const configureSelectedDate = () => {
@@ -29,30 +35,33 @@ const Datatable = () => {
         case "0":
           if (month < 10) {
             return selectedDate = `${year}-0${month}`;
-          } else
-          return selectedDate = `${year}-${month}`;
+          } else {
+            return selectedDate = `${year}-${month}`;
+          }
         case "1":
           if (month-1 < 10) {
             return selectedDate = `${year}-0${month-1}`;
-          } else
-          return selectedDate = `${year}-${month-1}`;
+          } else {
+            return selectedDate = `${year}-${month-1}`;
+          }
         case "2":
           if (month-2 < 10) {
             return selectedDate = `${year}-0${month-2}`;
-          } else
-          return selectedDate = `${year}-${month-2}`;
+          } else {
+            return selectedDate = `${year}-${month-2}`;
+          }
         case "3":
           if (month-3 < 10) {
             return selectedDate = `${year}-0${month-3}`;
-          } else
-          return selectedDate = `${year}-${month-3}`;
+          } else {
+            return selectedDate = `${year}-${month-3}`;
+          }
         default:
           return selectedDate = false;
       }
     };
 
     const requestFilteredData = (filterUrl) => {
-      console.log(filterUrl);
       fetch(filterUrl)
         .then((res) => res.json())
         .then((reports) => setFormData(reports))
@@ -60,10 +69,10 @@ const Datatable = () => {
     };
 
     const filterDate = () => {
-      let selectedDate = configureSelectedDate();     
+      let selectedDate = configureSelectedDate();
       if (selectedDate) {
         const filterUrl = `https://9gdq2gvn61.execute-api.us-east-2.amazonaws.com/staging/twilio/date?selectedDate=${selectedDate}`;
-        return requestFilteredData(filterUrl);
+        requestFilteredData(filterUrl);
       } else {
         const filterUrl = "https://9gdq2gvn61.execute-api.us-east-2.amazonaws.com/staging/twilio/body";
         return requestFilteredData(filterUrl);
@@ -71,7 +80,7 @@ const Datatable = () => {
     };
       
     e.addEventListener("change", filterDate);
-})
+  }
 
   return (
     <div>
@@ -80,9 +89,9 @@ const Datatable = () => {
         <select class="form-select form-select-lg mb-3" id="select" aria-label=".form-select-lg example">
           <option value="false" selected>All Months</option>
           <option value="0">Current Month</option>
-          <option value="1">Past 1 Month</option>
-          <option value="2">Past 2 Months</option>
-          <option value="3">Past 3 Months</option>
+          <option value="1">1 Month Ago</option>
+          <option value="2">2 Months Ago</option>
+          <option value="3">3 Months Ago</option>
         </select>
       </div>
       <table className="table table-borderless">
@@ -97,40 +106,46 @@ const Datatable = () => {
           </tr>
         </thead>
         <tbody id="data-table">
-          {formData.map((element) => (
-            <tr className="data-row">
-              <td>
-                <a href={element.photo_url} target="_blank" rel="noreferrer">
-                  <Img
-                    src={[element.photo_url, DefaultImage]}
-                    alt="not available"
-                    className="custom-photo"
-                  />
-                </a>
-              </td>
-              <td>
-                {element.location.charAt(0).toUpperCase() +
-                  element.location.slice(1)}
-              </td>
-              <td>
-                {element.trash_name.charAt(0).toUpperCase() +
-                  element.trash_name.slice(1)}
-              </td>
-              <td>
-                {element.report_from.slice(2, 5) +
-                  "-" +
-                  element.report_from.slice(5, 8) +
-                  "-" +
-                  element.report_from.slice(8)}
-              </td>
-              <td>{element.report_date.slice(0, 10)}</td>
-              <td>
-                <button className="btn-status">New</button>
-              </td>
-            </tr>
-          ))}
+          {
+            formData.map((element) => (
+              <tr className="data-row">
+                <td>
+                  <a href={element.photo_url} target="_blank" rel="noreferrer">
+                    <Img
+                      src={[element.photo_url, DefaultImage]}
+                      alt="not available"
+                      className="custom-photo"
+                    />
+                  </a>
+                </td>
+                <td>
+                  {element.location.charAt(0).toUpperCase() +
+                    element.location.slice(1)}
+                </td>
+                <td>
+                  {element.trash_name.charAt(0).toUpperCase() +
+                    element.trash_name.slice(1)}
+                </td>
+                <td>
+                  {element.report_from.slice(2, 5) +
+                    "-" +
+                    element.report_from.slice(5, 8) +
+                    "-" +
+                    element.report_from.slice(8)}
+                </td>
+                <td>{element.report_date.slice(0, 10)}</td>
+                <td>
+                  <button className="btn-status">New</button>
+                </td>
+              </tr>
+            )) 
+
+        }
         </tbody>
       </table>
+      <p>
+        { formData ? "" : "No reports available."}
+      </p>
     </div>
   )
 }
