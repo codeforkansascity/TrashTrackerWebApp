@@ -14,26 +14,62 @@ const Datatable = () => {
     .then((res) => res.json())
     .then((reports) => setFormData(reports))
     .catch(err => console.error(err));
-
-    console.log("currently selecting value....." + document.getElementById("#select"))
   },[]) // [] indicates that useEffect will only fire once when component is rendered (it won't rerender if state changes)
-
-  const date = new Date();
-
-  const month = date.getMonth() + 1;
-  const year = date.getFullYear();
   
-  const currentDate = `${year}-${month}`;
-  console.log(currentDate); 
+  useEffect(() => {
+    let e = document.getElementById("select");
 
+    const configureSelectedDate = () => {
+      let selected = e.options[e.selectedIndex].value;
+      let date = new Date();
+      let month = date.getMonth() + 1;
+      let year = date.getFullYear();
+      let selectedDate = `${year}-${month}`;
+      switch(selected) {
+        case "0":
+          if (month < 10) {
+            return selectedDate = `${year}-0${month}`;
+          } else
+          return selectedDate = `${year}-${month}`;
+        case "1":
+          if (month-1 < 10) {
+            return selectedDate = `${year}-0${month-1}`;
+          } else
+          return selectedDate = `${year}-${month-1}`;
+        case "2":
+          if (month-2 < 10) {
+            return selectedDate = `${year}-0${month-2}`;
+          } else
+          return selectedDate = `${year}-${month-2}`;
+        case "3":
+          if (month-3 < 10) {
+            return selectedDate = `${year}-0${month-3}`;
+          } else
+          return selectedDate = `${year}-${month-3}`;
+        default:
+          return selectedDate = "";
+      }
+    };
 
+    const filterDate = () => {
+      let selectedDate = configureSelectedDate();      
+      const filterUrl = `https://9gdq2gvn61.execute-api.us-east-2.amazonaws.com/staging/twilio/date?selectedDate=${selectedDate}`;
+      console.log(filterUrl);
+      // fetch(filterUrl)
+      //   .then((res) => res.json())
+      //   .then((reports) => setFormData(reports))
+      //   .catch(err => console.error(err));
+    };
+      
+    e.addEventListener("change", filterDate);
+})
 
   return (
     <div>
       <div class="col-6 mt-2 mb-5 mx-auto">
         <label for="formGroupExampleInput" class="form-label">Date Filters</label>
         <select class="form-select form-select-lg mb-3" id="select" aria-label=".form-select-lg example">
-          <option selected>Select</option>
+          <option value="false" selected>All Months</option>
           <option value="0">Current Month</option>
           <option value="1">Past 1 Month</option>
           <option value="2">Past 2 Months</option>
