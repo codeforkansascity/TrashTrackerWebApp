@@ -121,6 +121,7 @@ app.get(path + hashKeyPath, function(req, res) {
  ********************************/
 
 app.get(path + customKeyPath, function(req, res) {
+  const selectedDate = req.query.selectedDate;
   let queryParams = {
     TableName: tableName,
     FilterExpression: "begins_with(#report_date, :date) AND #status <> :status",
@@ -129,7 +130,7 @@ app.get(path + customKeyPath, function(req, res) {
       "#status":"status"
     },
     ExpressionAttributeValues: {
-      ":date": "2022-09",
+      ":date": selectedDate,
       ':status':"completed"
     }
   }

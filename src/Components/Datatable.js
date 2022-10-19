@@ -47,18 +47,27 @@ const Datatable = () => {
           } else
           return selectedDate = `${year}-${month-3}`;
         default:
-          return selectedDate = "";
+          return selectedDate = false;
       }
     };
 
-    const filterDate = () => {
-      let selectedDate = configureSelectedDate();      
-      const filterUrl = `https://9gdq2gvn61.execute-api.us-east-2.amazonaws.com/staging/twilio/date?selectedDate=${selectedDate}`;
+    const requestFilteredData = (filterUrl) => {
       console.log(filterUrl);
-      // fetch(filterUrl)
-      //   .then((res) => res.json())
-      //   .then((reports) => setFormData(reports))
-      //   .catch(err => console.error(err));
+      fetch(filterUrl)
+        .then((res) => res.json())
+        .then((reports) => setFormData(reports))
+        .catch(err => console.error(err));
+    };
+
+    const filterDate = () => {
+      let selectedDate = configureSelectedDate();     
+      if (selectedDate) {
+        const filterUrl = `https://9gdq2gvn61.execute-api.us-east-2.amazonaws.com/staging/twilio/date?selectedDate=${selectedDate}`;
+        return requestFilteredData(filterUrl);
+      } else {
+        const filterUrl = "https://9gdq2gvn61.execute-api.us-east-2.amazonaws.com/staging/twilio/body";
+        return requestFilteredData(filterUrl);
+      };
     };
       
     e.addEventListener("change", filterDate);

@@ -41,7 +41,7 @@ const Home = () => {
         :
         <Datatable />        
       }
-      <Datatable3 />    
+      {/* <Datatable3 />     */}
       {/* <PrintMap /> */}
       <Footer />
     </div>
