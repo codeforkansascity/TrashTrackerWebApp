@@ -8,17 +8,19 @@ const Datatable = () => {
 
   const getUrl = "https://9gdq2gvn61.execute-api.us-east-2.amazonaws.com/staging/twilio/body";
 
-  // Fetch data for editing entries when the component is mounted
   useEffect(() => {
     getUrlFetch()
   },[]) // [] indicates that useEffect will only fire once when component is rendered (it won't rerender if state changes)
+  // If a state is put in [], useEffect only fires when that state changes
 
   const getUrlFetch = async () => {
+    // Fetch data for report entries when the component is mounted
     await fetch(getUrl)
     .then((res) => res.json())
     .then((reports) => setFormData(reports))
     .catch(err => console.error(err));
 
+    // Fetch filtered data for report entries when users use date filters
     await filterReports();
   }
   
@@ -26,6 +28,7 @@ const Datatable = () => {
     let e = document.getElementById("select");
 
     const configureSelectedDate = () => {
+      // Configure selectedDate to be used as fetch url query value
       let selected = e.options[e.selectedIndex].value;
       let date = new Date();
       let month = date.getMonth() + 1;
@@ -61,30 +64,33 @@ const Datatable = () => {
       }
     };
 
-    const requestFilteredData = (filterUrl) => {
-      fetch(filterUrl)
+    const requestFilteredData = async (filterUrl) => {
+      // Add fetch request
+      await fetch(filterUrl)
         .then((res) => res.json())
         .then((reports) => setFormData(reports))
         .catch(err => console.error(err));
     };
 
     const filterDate = () => {
+      // Fetch filtered data through new filter url
       let selectedDate = configureSelectedDate();
       if (selectedDate) {
         const filterUrl = `https://9gdq2gvn61.execute-api.us-east-2.amazonaws.com/staging/twilio/date?selectedDate=${selectedDate}`;
-        requestFilteredData(filterUrl);
+        return requestFilteredData(filterUrl);
       } else {
         const filterUrl = "https://9gdq2gvn61.execute-api.us-east-2.amazonaws.com/staging/twilio/body";
         return requestFilteredData(filterUrl);
       };
     };
       
+    // When users use date filters, start the function filterDate
     e.addEventListener("change", filterDate);
   }
 
   return (
-    <div>
-      <div class="col-6 mt-2 mb-5 mx-auto">
+    <div className="container">
+      <div className="col-6 mt-2 mb-5 mx-auto">
         <label for="formGroupExampleInput" class="form-label">Date Filters</label>
         <select class="form-select form-select-lg mb-3" id="select" aria-label=".form-select-lg example">
           <option value="false" selected>All Months</option>
@@ -143,9 +149,9 @@ const Datatable = () => {
         }
         </tbody>
       </table>
-      <p>
-        { formData ? "" : "No reports available."}
-      </p>
+      <div className="mt-5 mb-5 ms-5">
+        { formData.length === 0 ? "No reports available." : "" }
+      </div>
     </div>
   )
 }
