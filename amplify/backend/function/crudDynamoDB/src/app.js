@@ -28,6 +28,39 @@ if (process.env.ENV && process.env.ENV !== "NONE") {
   tableName = tableName + '-' + process.env.ENV;
 }
 
+// Below worked! Line 32 - Line 60 AWS Cloudwatch successfuly returned coordinates in their logs 
+let location = new AWS.Location();
+
+const geocode = (e) => {
+  console.log("testing.......");
+  let params = {
+    "IndexName": "trashLocationSearch-staging",
+    "Text": "Kansas City, MO",
+    "BiasPosition": [-94.58316695554774,39.103642515847355],
+    "MaxResults": 5
+  };
+
+  location.searchPlaceIndexForText(params, function(err, data) {
+    if (err) {
+      // alert("Something went wrong. Please contact Code for KC.");
+      // document.querySelector("#response").textContent = JSON.stringify(err, undefined, 2);
+      console.log("!!!!!!!!!! errror" + err)
+    } else {
+      // document.querySelector("#response").textContent = JSON.stringify(data, undefined, 2);
+
+      const coordinates = data.Results[0].Place.Geometry.Point;
+      // setMarkerLocation({
+      //   longitude: coordinates[0],
+      //   latitude: coordinates[1],                 
+      // });
+      console.log("!!!!!!!!!!!!!!!!!!" + coordinates);
+      // return coordinates
+    }
+  })
+}
+
+geocode();
+
 const userIdPresent = true; // TODO: update in case is required to use that definition
 const partitionKeyName = "body";
 const partitionKeyType = "S";
