@@ -28,39 +28,6 @@ if (process.env.ENV && process.env.ENV !== "NONE") {
   tableName = tableName + '-' + process.env.ENV;
 }
 
-// Below worked! Line 32 - Line 60 AWS Cloudwatch successfuly returned coordinates in their logs 
-let location = new AWS.Location();
-
-const geocode = (e) => {
-  console.log("testing.......");
-  let params = {
-    "IndexName": "trashLocationSearch-staging",
-    "Text": "Kansas City, MO",
-    "BiasPosition": [-94.58316695554774,39.103642515847355],
-    "MaxResults": 5
-  };
-
-  location.searchPlaceIndexForText(params, function(err, data) {
-    if (err) {
-      // alert("Something went wrong. Please contact Code for KC.");
-      // document.querySelector("#response").textContent = JSON.stringify(err, undefined, 2);
-      console.log("!!!!!!!!!! errror" + err)
-    } else {
-      // document.querySelector("#response").textContent = JSON.stringify(data, undefined, 2);
-
-      const coordinates = data.Results[0].Place.Geometry.Point;
-      // setMarkerLocation({
-      //   longitude: coordinates[0],
-      //   latitude: coordinates[1],                 
-      // });
-      console.log("!!!!!!!!!!!!!!!!!!" + coordinates);
-      // return coordinates
-    }
-  })
-}
-
-geocode();
-
 const userIdPresent = true; // TODO: update in case is required to use that definition
 const partitionKeyName = "body";
 const partitionKeyType = "S";
@@ -223,6 +190,34 @@ app.get(path + '/object' + hashKeyPath + sortKeyPath, function(req, res) {
   });
 });
 
+/************************************
+* Get geo coordinates from received location data *
+*************************************/
+let location = new AWS.Location();
+
+const geocode = (address) => {
+  let params = {
+    "IndexName": "trashLocationSearch-staging",
+    "BiasPosition": [-94.58316695554774,39.103642515847355],
+    "MaxResults": 5,
+    "Text": address,
+  };
+
+  console.log(JSON.stringify(params));
+
+  location.searchPlaceIndexForText(params, function(err, data) {
+    if (err) {
+      console.log("PlaceIndexError || at app.js in backend lambda" + JSON.stringify(err, undefined, 2))
+    } else {
+      console.log(JSON.stringify(data, undefined, 2)); // Logging all search results from the "Text"
+      const coordinates = data.Results[0].Place.Geometry.Point;    
+      console.log("!!!!!!!!!!!!!!!!!!" + coordinates);
+      return coordinates
+    }
+  })
+}
+
+
 
 /************************************
 * HTTP put method for insert object *
@@ -257,10 +252,25 @@ app.post(path, function(req, res) {
     req.body['userId'] = req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
   }
 
+  console.log(req.body.location);
+  
+  // Add geo coordinates to req.body
+  let coordinates = geocode(req.body.location);
+
+  console.log(coordinates);
+
+  if (coordinates) {
+    console.log("coordinates exist!!!!");
+    req.body = {...req.body, longitude: coordinates[0], latitude: coordinates[1]}
+  }
+
+  console.log("Logging req.body!!!!" + JSON.stringify(req.body));
+
   let putItemParams = {
     TableName: tableName,
-    Item: req.body
+    Item: req.body,
   }
+
   dynamodb.put(putItemParams, (err, data) => {
     if (err) {
       res.statusCode = 500;
