@@ -28,7 +28,7 @@
         },
         "crudDynamoDB": {
           "deploymentBucketName": "amplify-amplify0a8bcab924934-staging-210245-deployment",
-          "s3Key": "amplify-builds/crudDynamoDB-6c633045566e4f5a7070-build.zip"
+          "s3Key": "amplify-builds/crudDynamoDB-48415958487741586e56-build.zip"
         }
       }
     }

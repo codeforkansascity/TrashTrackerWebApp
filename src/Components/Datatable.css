@@ -103,3 +103,8 @@
   backdrop-filter: blur(3px);
   z-index: 5;
 }
+
+/* Styling DataEdit.js */
+.cell-sm {
+  width: 15px;
+}

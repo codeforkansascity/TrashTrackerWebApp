@@ -27,6 +27,8 @@ const DataEdit = () => {
         // Update the state of trash name, location, and PUT request options
         formData[i].trash_name = document.getElementsByClassName("trash")[i].value;
         formData[i].location = document.getElementsByClassName("location")[i].value;
+        formData[i].longitude = document.getElementsByClassName("longitude")[i].value;
+        formData[i].latitude = document.getElementsByClassName("latitude")[i].value;
         let requestOptions = {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
@@ -82,6 +84,8 @@ const DataEdit = () => {
             <th scope="col" className="thumb-col"></th>
             <th scope="col">Location</th>
             <th scope="col">Description</th>
+            <th scope="col">Longitude</th>
+            <th scope="col">Latitude</th>
             <th scope="col">Reported by</th>
             <th scope="col">Date</th>
             <th scope="col"></th>
@@ -104,6 +108,12 @@ const DataEdit = () => {
               </td>
               <td>
                 <textarea type="text" className="form-control trash" defaultValue={element.trash_name}></textarea>
+              </td>
+              <td className="cell-sm">
+                <input type="text" className="form-control longitude" defaultValue={element.longitude} />
+              </td>
+              <td className="cell-sm">
+                <input type="text" className="form-control latitude" defaultValue={element.latitude} />
               </td>
               <td>
                 {element.report_from.slice(2, 5) +
