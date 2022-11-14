@@ -11,3 +11,10 @@
 .entries-title {
   padding-top: 2em;
 }
+
+.popupBtn {
+  font-size: 10.5px;
+  padding: 0.1rem 0.3rem;
+  margin-top: 0.2rem;
+  display: block;
+}

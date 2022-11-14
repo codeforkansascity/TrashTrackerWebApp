@@ -13,13 +13,64 @@ import "./Map.css";
 // Reference: https://ui.docs.amplify.aws/react/connected-components/geo
 // See the section on Usage with react-map-gl
 
-const MarkerWithPopup = ({ latitude, longitude, heading, location }) => {
+const MarkerWithPopup = ({ latitude, longitude, heading, location, body, report_date, report_from, photo_url }) => {
   const [showPopup, setShowPopup] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
+  const [trash, setTrash] = useState("");
+  const [address, setAddress] = useState("");
 
   const handleMarkerClick = ({ originalEvent }) => {
     originalEvent.stopPropagation();
     setShowPopup(true);
+  };
+
+  // Add function that update formData and send PUT request to the database
+  const updateTrashAndLocation = (e) => {
+    e.preventDefault();
+    const sendFetchRequest = () => {
+      const putOrPostUrl = "https://9gdq2gvn61.execute-api.us-east-2.amazonaws.com/staging/twilio";
+      let requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        'Access-Control-Allow-Origin': 'request-originating server addresses',
+        body: JSON.stringify({
+          trash_name: trash, 
+          location: address, 
+          body: e.target.id, 
+          report_date: report_date,
+          report_from: report_from,
+          photo_url: photo_url
+        })
+      };
+  
+      // Send PUT request to DynamoDB
+      fetch(putOrPostUrl, requestOptions)
+        .then((response) => response.json())
+        .then((data) => {
+          console.log('Success:', data);
+          alert("Success! Please refresh the page to view your changes.")
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert("Something went wrong! Please contact the administrator.")
+        });
+    }
+
+    if (trash === "" || address === "") {
+      alert("Trash name and location are required. Please fill out both input fields.")
+    } else {
+      console.log(JSON.stringify({
+        trash_name: trash, 
+        location: address, 
+        body: e.target.id, 
+        report_date: report_date,
+        report_from: report_from,
+        photo_url: photo_url
+      }));
+      return sendFetchRequest()
+    }
+    setShowEdit(false); 
+
   };
 
   return (
@@ -36,17 +87,18 @@ const MarkerWithPopup = ({ latitude, longitude, heading, location }) => {
           offset={{ bottom: [0, -40] }}
           onClose={() => setShowPopup(false)}
         >
-          <Heading level={6}>{heading}</Heading>
           {
           showEdit ? 
             <div>
-              <Text>Location: {location}</Text>
-              <button className="btn btn-dark btn-sm popupBtn" onClick={() => setShowEdit(true) }>Edit</button>
+              <input value={trash} placeholder={heading} onInput={(e) => setTrash(e.target.value)} />
+              <input value={address} placeholder={location} onInput={(e) => setAddress(e.target.value)} />
+              <button id={body} className="btn btn-dark btn-sm popupBtn" onClick={(e) => updateTrashAndLocation(e) }>Submit</button>
             </div>
             : 
             <div>
-              <textarea placeholder={location}></textarea>
-              <button className="btn btn-dark btn-sm popupBtn" onClick={() => setShowEdit(false) }>Submit</button>
+              <Heading level={6}>{heading}</Heading>
+              <Text>Location: {location}</Text>
+              <button className="btn btn-dark btn-sm popupBtn" onClick={() => setShowEdit(true) }>Edit</button>
             </div>
           }
         </Popup>
@@ -112,14 +164,18 @@ const MapWithMarkerPopup = () => {
             <MarkerWithPopup 
               latitude={element.latitude} 
               longitude={element.longitude}
-              heading={element.trash_name} 
+              heading={element.trash_name.charAt(0).toUpperCase() + element.trash_name.slice(1)} 
               location={element.location} 
+              body={element.body}
+              report_date={element.report_date}
+              report_from={element.report_from}
+              photo_url={element.photo_url}
               key={element.body} /> : ""
           )
         )}
-        <Marker latitude={latitude} longitude={longitude} />
+        {/* <Marker latitude={latitude} longitude={longitude} /> */}
       </MapView>
-      <Button onClick={updateMarker}>Move Marker</Button>
+      {/* <Button onClick={updateMarker}>Move Marker</Button> */}
       <div id="response"></div>
     </>
   );
