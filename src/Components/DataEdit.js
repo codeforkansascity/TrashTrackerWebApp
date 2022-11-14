@@ -10,7 +10,7 @@ const DataEdit = () => {
   const [formData, setFormData] = useState([]); 
 
   const getUrl = "https://9gdq2gvn61.execute-api.us-east-2.amazonaws.com/staging/twilio/body";
-  const putUrl = "https://9gdq2gvn61.execute-api.us-east-2.amazonaws.com/staging/twilio";
+  const putOrPostUrl = "https://9gdq2gvn61.execute-api.us-east-2.amazonaws.com/staging/twilio";
 
   // Fetch data for editing entries when the component is mounted
   useEffect(() => {
@@ -30,14 +30,14 @@ const DataEdit = () => {
         formData[i].longitude = document.getElementsByClassName("longitude")[i].value;
         formData[i].latitude = document.getElementsByClassName("latitude")[i].value;
         let requestOptions = {
-          method: 'PUT',
+          method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           'Access-Control-Allow-Origin': 'request-originating server addresses',
           body: JSON.stringify(formData[i])
         };
 
         // Send PUT request to DynamoDB
-        fetch(putUrl, requestOptions)
+        fetch(putOrPostUrl, requestOptions)
           .then((response) => response.json())
           .then((data) => {
             console.log('Success:', data);
@@ -64,7 +64,7 @@ const DataEdit = () => {
           body: JSON.stringify(formData[i])
         };
 
-    fetch(putUrl, requestOptions)
+    fetch(putOrPostUrl, requestOptions)
       .then((response) => response.json())
       .then((data) => {
         console.log('Success:', data);
@@ -93,7 +93,7 @@ const DataEdit = () => {
         </thead>
         <tbody id="data-table">
           {formData.map((element) => (
-            <tr className="data-row">
+            <tr className="data-row" key={element.body}>
               <td>
                 <a href={element.photo_url} target="_blank">
                   <Img

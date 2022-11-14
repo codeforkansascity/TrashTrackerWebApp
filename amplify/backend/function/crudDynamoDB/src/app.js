@@ -96,16 +96,6 @@ app.get(path + hashKeyPath, function(req, res) {
     }
   }
 
-  // let queryParams = {
-  //   TableName: tableName,
-  //   KeyConditions: condition,
-  //   FilterExpression: "contains(report_date, :date) AND status <> :name",
-  //   ExpressionAttributeValues: {
-  //     ':name':"completed",
-  //     ":date": "2022-9"
-  //   }
-  // }
-
   dynamodb.scan(queryParams, (err, data) => {
     if (err) {
       res.statusCode = 500;
@@ -191,7 +181,7 @@ app.get(path + '/object' + hashKeyPath + sortKeyPath, function(req, res) {
 });
 
 /************************************
-* HTTP put method for insert object *
+* HTTP put method for insert object; Usually used for users deleting reports on the website *
 *************************************/
 
 app.put(path, function(req, res) {
@@ -215,7 +205,8 @@ app.put(path, function(req, res) {
 });
 
 /************************************
-* HTTP post method for insert object *
+* HTTP post method for insert object; *
+* Usually used for Twilio sending reports data to DynamoDB, or receiving users edits on location * 
 *************************************/
 
 app.post(path, function(req, res) {
@@ -271,6 +262,39 @@ app.post(path, function(req, res) {
   } else {
     insertDataIntoDynamoDB();
   }
+});
+
+/************************************
+* HTTP post method for insert object * Usually used for getting coordinates when users search address in the map
+* Still under testing
+*************************************/
+
+app.post(path + "/geocode", function(req, res) {
+  // Get geo coordinates from req.body
+  let amazonLocationService = new AWS.Location();
+  let params = { // Parameters to be passed into Amazon Location Service 
+    "IndexName": "trashLocationSearch-staging",
+    "Text": req.body,
+    "BiasPosition": [-94.58316695554774,39.103642515847355],
+    "MaxResults": 3,
+  }; 
+
+  amazonLocationService.searchPlaceIndexForText(params, function(err, data) {
+    if (err) {
+      console.log("PlaceIndexError || at app.js in lambda in backend" + JSON.stringify(err, undefined, 2));
+      res.statusCode = 500;
+      res.json({error: err, url: req.url, body: req.body});
+    } else {
+      // console.log(JSON.stringify(data, undefined, 2)); // Logging all search results from the "Text"
+      let coordinates = data.Results[0].Place.Geometry.Point;    
+      const label = data.Results[0].Place.Label;    
+      if (coordinates) {
+        res.json({success: 'post call succeed! coordinates generated.', url: req.url, data: JSON.stringify(coordinates)})
+      } else {
+        res.json({success: 'post call succeed! coordinates not generated.', url: req.url, data: ""})
+      }
+    }
+  })
 });
 
 /**************************************

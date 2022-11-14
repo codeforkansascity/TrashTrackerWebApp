@@ -1,4 +1,4 @@
-import { React, useState} from "react";
+import { React, useState, useEffect } from "react";
 import { MapView, LocationSearch, Heading, Text, Button } from "@aws-amplify/ui-react";
 import { Marker, Popup } from 'react-map-gl';
 import "@aws-amplify/ui-react/styles.css";
@@ -13,8 +13,9 @@ import "./Map.css";
 // Reference: https://ui.docs.amplify.aws/react/connected-components/geo
 // See the section on Usage with react-map-gl
 
-function MarkerWithPopup({ latitude, longitude, heading, location }) {
+const MarkerWithPopup = ({ latitude, longitude, heading, location }) => {
   const [showPopup, setShowPopup] = useState(false);
+  const [showEdit, setShowEdit] = useState(false);
 
   const handleMarkerClick = ({ originalEvent }) => {
     originalEvent.stopPropagation();
@@ -36,63 +37,92 @@ function MarkerWithPopup({ latitude, longitude, heading, location }) {
           onClose={() => setShowPopup(false)}
         >
           <Heading level={6}>{heading}</Heading>
-          <Text>Location: {location}</Text>
+          {
+          showEdit ? 
+            <div>
+              <Text>Location: {location}</Text>
+              <button className="btn btn-dark btn-sm popupBtn" onClick={() => setShowEdit(true) }>Edit</button>
+            </div>
+            : 
+            <div>
+              <textarea placeholder={location}></textarea>
+              <button className="btn btn-dark btn-sm popupBtn" onClick={() => setShowEdit(false) }>Submit</button>
+            </div>
+          }
         </Popup>
       )}
     </>
   );
 }
 
-export default function MapWithMarkerPopup() {
+const MapWithMarkerPopup = () => {
+
+  const [formData, setFormData] = useState([]); 
+
+  const getUrl = "https://9gdq2gvn61.execute-api.us-east-2.amazonaws.com/staging/twilio/body";
+
+  // Fetch data for geo coordinates when the component is mounted
+  useEffect(() => {
+    fetch(getUrl)
+    .then((res) => res.json())
+    .then((reports) => setFormData(reports))
+    .catch(err => console.error(err));
+  },[])
+
   const [{ latitude, longitude }, setMarkerLocation] = useState({
     latitude: 39.1002489,
     longitude: -94.4940805,
   });
 
-  // Below doesn't seem to work on the front-end. But it worked on the back-end. See app.js in Lambda function
-  
-  // const AWS = require('aws-sdk');
-  // let location = new AWS.Location();
-
   const geocode = (e) => {
-    console.log("testing.......");
-    let params = {
-      "IndexName": "trashLocationSearch-staging",
-      "Text": "Kansas City, MO",
-      "BiasPosition": [-94.58316695554774,39.103642515847355], //[longitude, latitude]
-      "MaxResults": "5"
+    console.log("testing......." + e.value);
+    // Send PUT request to get geo coordinates
+    let requestOptions = {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      'Access-Control-Allow-Origin': 'request-originating server addresses',
+      body: JSON.stringify(e.value)
     };
 
-    // location.searchPlaceIndexForText(params, function(err, data) {
-    //   if (err) {
-    //     alert("Something went wrong. Please contact Code for KC.");
-    //     document.querySelector("#response").textContent = JSON.stringify(err, undefined, 2);
-    //   } else {
-    //     document.querySelector("#response").textContent = JSON.stringify(data, undefined, 2);
-
-    //     const coordinates = data.Results[0].Place.Geometry.Point;
-    //     setMarkerLocation({
-    //       longitude: coordinates[0],
-    //       latitude: coordinates[1],                 
-    //     });
-    //     console.log(coordinates);
-    //     return coordinates
-    //   }
-    // })
+    fetch("https://9gdq2gvn61.execute-api.us-east-2.amazonaws.com/staging/twilio/geocode", requestOptions)
+      .then((response) => response.json())
+      .then((data) => {
+        const coordinates = data;
+        // setMarkerLocation({
+        //   longitude: coordinates[0],
+        //   latitude: coordinates[1],                 
+        // });
+        console.log(coordinates);
+      })
+      .catch(error => {
+          console.error('Error:', error);
+          alert("Something went wrong! Please contact the administrator.")
+      });
   }
 
   const updateMarker = () => setMarkerLocation({ latitude: latitude + 0.03, longitude: longitude + 0.05 });
 
   return (
     <>
-      <MapView id="custom-map" initialViewState={{ latitude: 39.1002489, longitude: -94.5340805, zoom: 10 }} onClick={() => geocode()}>
-        <LocationSearch position="top-left" />
+      <MapView id="custom-map" initialViewState={{ latitude: 39.1002489, longitude: -94.5340805, zoom: 10 }}>
+        <LocationSearch position="top-left" onChange={geocode} />
+        {
+          formData.map((element) => (
+            element.latitude && element.longitude ? 
+            <MarkerWithPopup 
+              latitude={element.latitude} 
+              longitude={element.longitude}
+              heading={element.trash_name} 
+              location={element.location} 
+              key={element.body} /> : ""
+          )
+        )}
         <Marker latitude={latitude} longitude={longitude} />
-        <MarkerWithPopup latitude={39.1002489} longitude={-94.5340805} heading={"Fridge"} location={"Loose Park"} />
-        <MarkerWithPopup latitude={39.1302489} longitude={-94.4940805} heading={"Mattress"} location={"8th and main st"} />
       </MapView>
       <Button onClick={updateMarker}>Move Marker</Button>
       <div id="response"></div>
     </>
   );
 }
+
+export default MapWithMarkerPopup;

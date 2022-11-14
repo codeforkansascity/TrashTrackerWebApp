@@ -91,9 +91,9 @@ const Datatable = () => {
   return (
     <div className="container">
       <div className="col-6 mt-2 mb-5 mx-auto">
-        <label for="formGroupExampleInput" class="form-label">Date Filters</label>
-        <select class="form-select form-select-lg mb-3" id="select" aria-label=".form-select-lg example">
-          <option value="false" selected>All Months</option>
+        <label htmlFor="select" className="form-label">Date Filters</label>
+        <select className="form-select form-select-lg mb-3" id="select" defaultValue="false" aria-label=".form-select-lg example">
+          <option value="false">All Months</option>
           <option value="0">Current Month</option>
           <option value="1">1 Month Ago</option>
           <option value="2">2 Months Ago</option>
@@ -114,7 +114,7 @@ const Datatable = () => {
         <tbody id="data-table">
           {
             formData.map((element) => (
-              <tr className="data-row">
+              <tr className="data-row" key={element.body} >
                 <td>
                   <a href={element.photo_url} target="_blank" rel="noreferrer">
                     <Img
