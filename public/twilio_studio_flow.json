@@ -1,0 +1,563 @@
+{
+  "description": "A New Flow",
+  "states": [
+    {
+      "name": "Trigger",
+      "type": "trigger",
+      "transitions": [
+        {
+          "next": "initial_reply",
+          "event": "incomingMessage"
+        },
+        {
+          "event": "incomingCall"
+        },
+        {
+          "event": "incomingConversationMessage"
+        },
+        {
+          "event": "incomingRequest"
+        },
+        {
+          "event": "incomingParent"
+        }
+      ],
+      "properties": {
+        "offset": {
+          "x": 0,
+          "y": 0
+        }
+      }
+    },
+    {
+      "name": "initial_spanish_reply",
+      "type": "send-and-wait-for-reply",
+      "transitions": [
+        {
+          "next": "regular_spanish_split",
+          "event": "incomingMessage"
+        },
+        {
+          "event": "timeout"
+        },
+        {
+          "event": "deliveryFailure"
+        }
+      ],
+      "properties": {
+        "offset": {
+          "x": -840,
+          "y": 250
+        },
+        "service": "{{trigger.message.InstanceSid}}",
+        "channel": "{{trigger.message.ChannelSid}}",
+        "from": "{{flow.channel.address}}",
+        "body": "Gracias por contactar a Trash Tracker. Para reportar vertidos ilegales, por favor dígame la ubicación. Por ejemplo, 1234 Fifth St., o esquina de Benton e Independence. Puedes decir \"English\" para inglés.",
+        "timeout": "600"
+      }
+    },
+    {
+      "name": "after_location_confirmed",
+      "type": "send-and-wait-for-reply",
+      "transitions": [
+        {
+          "next": "regular_english_split_2",
+          "event": "incomingMessage"
+        },
+        {
+          "event": "timeout"
+        },
+        {
+          "event": "deliveryFailure"
+        }
+      ],
+      "properties": {
+        "offset": {
+          "x": 270,
+          "y": 770
+        },
+        "service": "{{trigger.message.InstanceSid}}",
+        "channel": "{{trigger.message.ChannelSid}}",
+        "from": "{{flow.channel.address}}",
+        "body": "Thank you. Please describe what is dumped there. For example, \"furniture,\" \"tires,\" or \"trash bags.\"",
+        "timeout": "600"
+      }
+    },
+    {
+      "name": "after_ubicacion_confirmed",
+      "type": "send-and-wait-for-reply",
+      "transitions": [
+        {
+          "next": "regular_spanish_split_2",
+          "event": "incomingMessage"
+        },
+        {
+          "event": "timeout"
+        },
+        {
+          "event": "deliveryFailure"
+        }
+      ],
+      "properties": {
+        "offset": {
+          "x": -810,
+          "y": 810
+        },
+        "service": "{{trigger.message.InstanceSid}}",
+        "channel": "{{trigger.message.ChannelSid}}",
+        "from": "{{flow.channel.address}}",
+        "body": "Gracias. Por favor, describa lo que se tira allí. Por ejemplo, \"muebles\", \"llantas\" o \"bolsas de basura\".",
+        "timeout": "600"
+      }
+    },
+    {
+      "name": "gracias",
+      "type": "send-message",
+      "transitions": [
+        {
+          "next": "http_request_spanish",
+          "event": "sent"
+        },
+        {
+          "event": "failed"
+        }
+      ],
+      "properties": {
+        "offset": {
+          "x": -390,
+          "y": 2540
+        },
+        "service": "{{trigger.message.InstanceSid}}",
+        "channel": "{{trigger.message.ChannelSid}}",
+        "from": "{{flow.channel.address}}",
+        "to": "{{contact.channel.address}}",
+        "body": "Gracias por ayudar a que nuestro vecindario esté más limpio."
+      }
+    },
+    {
+      "name": "regular_english_split",
+      "type": "split-based-on",
+      "transitions": [
+        {
+          "next": "after_location_confirmed",
+          "event": "noMatch"
+        },
+        {
+          "next": "initial_spanish_reply",
+          "event": "match",
+          "conditions": [
+            {
+              "friendly_name": "If value contains Español",
+              "arguments": [
+                "{{widgets.initial_reply.inbound.Body}}"
+              ],
+              "type": "starts_with",
+              "value": "espa"
+            }
+          ]
+        },
+        {
+          "next": "thank_you",
+          "event": "match",
+          "conditions": [
+            {
+              "friendly_name": "If value equal_to bye",
+              "arguments": [
+                "{{widgets.initial_reply.inbound.Body}}"
+              ],
+              "type": "equal_to",
+              "value": "bye"
+            }
+          ]
+        }
+      ],
+      "properties": {
+        "input": "{{widgets.initial_reply.inbound.Body}}",
+        "offset": {
+          "x": 250,
+          "y": 510
+        }
+      }
+    },
+    {
+      "name": "initial_reply",
+      "type": "send-and-wait-for-reply",
+      "transitions": [
+        {
+          "next": "regular_english_split",
+          "event": "incomingMessage"
+        },
+        {
+          "event": "timeout"
+        },
+        {
+          "event": "deliveryFailure"
+        }
+      ],
+      "properties": {
+        "offset": {
+          "x": 0,
+          "y": 200
+        },
+        "service": "{{trigger.message.InstanceSid}}",
+        "channel": "{{trigger.message.ChannelSid}}",
+        "from": "{{flow.channel.address}}",
+        "body": "Thanks for contacting Trash Tracker. To report illegal dumping, please tell me the location. For example, 1234 Fifth St., or corner of Benton and Independence. For Spanish, say español.",
+        "timeout": "600"
+      }
+    },
+    {
+      "name": "regular_spanish_split",
+      "type": "split-based-on",
+      "transitions": [
+        {
+          "next": "after_ubicacion_confirmed",
+          "event": "noMatch"
+        },
+        {
+          "next": "gracias",
+          "event": "match",
+          "conditions": [
+            {
+              "friendly_name": "If value equal_to ubicacion",
+              "arguments": [
+                "{{widgets.initial_spanish_reply.inbound.Body}}"
+              ],
+              "type": "starts_with",
+              "value": "adi"
+            }
+          ]
+        },
+        {
+          "next": "initial_reply",
+          "event": "match",
+          "conditions": [
+            {
+              "friendly_name": "If value equal_to English",
+              "arguments": [
+                "{{widgets.initial_spanish_reply.inbound.Body}}"
+              ],
+              "type": "starts_with",
+              "value": "English"
+            }
+          ]
+        }
+      ],
+      "properties": {
+        "input": "{{widgets.initial_spanish_reply.inbound.Body}}",
+        "offset": {
+          "x": -950,
+          "y": 520
+        }
+      }
+    },
+    {
+      "name": "http_request_english_1",
+      "type": "make-http-request",
+      "transitions": [
+        {
+          "event": "success"
+        },
+        {
+          "event": "failed"
+        }
+      ],
+      "properties": {
+        "offset": {
+          "x": 680,
+          "y": 2860
+        },
+        "method": "POST",
+        "content_type": "application/json;charset=utf-8",
+        "body": "{\"body\": \"{{trigger.message.MessageSid}}\", \"report_date\": \"{{widgets.initial_reply.outbound.DateCreated}} \", \"trash_name\": \"{{widgets.after_location_confirmed.inbound.Body}}\", \"location\": \"{{widgets.initial_reply.inbound.Body}}\", \"report_from\": \"{{trigger.message.From}}\", \"photo_url\": \"{{widgets.after_name_confirmed.inbound.MediaUrl0}}\"}",
+        "url": "https://9gdq2gvn61.execute-api.us-east-2.amazonaws.com/staging/twilio"
+      }
+    },
+    {
+      "name": "http_request_spanish",
+      "type": "make-http-request",
+      "transitions": [
+        {
+          "event": "success"
+        },
+        {
+          "event": "failed"
+        }
+      ],
+      "properties": {
+        "offset": {
+          "x": -390,
+          "y": 2880
+        },
+        "method": "POST",
+        "content_type": "application/json;charset=utf-8",
+        "body": "{\"body\": \"{{trigger.message.MessageSid}}\", \"report_date\": \"{{widgets.initial_reply.outbound.DateCreated}}\", \"trash_name\": \"{{widgets.after_ubicacion_confirmed.inbound.Body}}\", \"location\": \"{{widgets.initial_spanish_reply.inbound.Body}}\", \"report_from\": \"{{trigger.message.From}}\", \"photo_url\": \"{{widgets.after_nombre_confirmed.inbound.MediaUrl0}}\"}",
+        "url": "https://9gdq2gvn61.execute-api.us-east-2.amazonaws.com/staging/twilio"
+      }
+    },
+    {
+      "name": "after_name_confirmed",
+      "type": "send-and-wait-for-reply",
+      "transitions": [
+        {
+          "next": "regular_english_split_3",
+          "event": "incomingMessage"
+        },
+        {
+          "next": "http_request_english_1",
+          "event": "timeout"
+        },
+        {
+          "event": "deliveryFailure"
+        }
+      ],
+      "properties": {
+        "offset": {
+          "x": 620,
+          "y": 1580
+        },
+        "service": "{{trigger.message.InstanceSid}}",
+        "channel": "{{trigger.message.ChannelSid}}",
+        "from": "{{flow.channel.address}}",
+        "body": "Thanks. If you'd like to send a photo, please do so now.",
+        "timeout": "600"
+      }
+    },
+    {
+      "name": "after_nombre_confirmed",
+      "type": "send-and-wait-for-reply",
+      "transitions": [
+        {
+          "next": "regular_spanish_split_3",
+          "event": "incomingMessage"
+        },
+        {
+          "event": "timeout"
+        },
+        {
+          "event": "deliveryFailure"
+        }
+      ],
+      "properties": {
+        "offset": {
+          "x": -390,
+          "y": 1600
+        },
+        "service": "{{trigger.message.InstanceSid}}",
+        "channel": "{{trigger.message.ChannelSid}}",
+        "from": "{{flow.channel.address}}",
+        "body": "Gracias. Si desea enviar una foto, hágalo ahora.",
+        "timeout": "600"
+      }
+    },
+    {
+      "name": "thank_you",
+      "type": "send-message",
+      "transitions": [
+        {
+          "next": "http_request_english_1",
+          "event": "sent"
+        },
+        {
+          "event": "failed"
+        }
+      ],
+      "properties": {
+        "offset": {
+          "x": 540,
+          "y": 2530
+        },
+        "service": "{{trigger.message.InstanceSid}}",
+        "channel": "{{trigger.message.ChannelSid}}",
+        "from": "{{flow.channel.address}}",
+        "attributes": "",
+        "to": "{{contact.channel.address}}",
+        "body": "Thanks for helping make our neighborhood cleaner."
+      }
+    },
+    {
+      "name": "regular_english_split_2",
+      "type": "split-based-on",
+      "transitions": [
+        {
+          "next": "after_name_confirmed",
+          "event": "noMatch"
+        },
+        {
+          "next": "initial_spanish_reply",
+          "event": "match",
+          "conditions": [
+            {
+              "friendly_name": "If value contains Español",
+              "arguments": [
+                "{{widgets.after_location_confirmed.inbound.Body}}"
+              ],
+              "type": "starts_with",
+              "value": "espa"
+            }
+          ]
+        },
+        {
+          "next": "thank_you",
+          "event": "match",
+          "conditions": [
+            {
+              "friendly_name": "If value equal_to bye",
+              "arguments": [
+                "{{widgets.after_location_confirmed.inbound.Body}}"
+              ],
+              "type": "equal_to",
+              "value": "bye"
+            }
+          ]
+        }
+      ],
+      "properties": {
+        "input": "{{widgets.after_location_confirmed.inbound.Body}}",
+        "offset": {
+          "x": 530,
+          "y": 1210
+        }
+      }
+    },
+    {
+      "name": "regular_english_split_3",
+      "type": "split-based-on",
+      "transitions": [
+        {
+          "next": "thank_you",
+          "event": "noMatch"
+        },
+        {
+          "next": "initial_spanish_reply",
+          "event": "match",
+          "conditions": [
+            {
+              "friendly_name": "If value contains Español",
+              "arguments": [
+                "{{widgets.after_name_confirmed.inbound.Body}}"
+              ],
+              "type": "starts_with",
+              "value": "espa"
+            }
+          ]
+        },
+        {
+          "next": "thank_you",
+          "event": "match",
+          "conditions": [
+            {
+              "friendly_name": "If value equal_to bye",
+              "arguments": [
+                "{{widgets.after_name_confirmed.inbound.Body}}"
+              ],
+              "type": "equal_to",
+              "value": "bye"
+            }
+          ]
+        }
+      ],
+      "properties": {
+        "input": "{{widgets.after_name_confirmed.inbound.Body}}",
+        "offset": {
+          "x": 1060,
+          "y": 1990
+        }
+      }
+    },
+    {
+      "name": "regular_spanish_split_2",
+      "type": "split-based-on",
+      "transitions": [
+        {
+          "next": "after_nombre_confirmed",
+          "event": "noMatch"
+        },
+        {
+          "next": "gracias",
+          "event": "match",
+          "conditions": [
+            {
+              "friendly_name": "If value equal_to ubicacion",
+              "arguments": [
+                "{{widgets.after_ubicacion_confirmed.inbound.Body}}"
+              ],
+              "type": "starts_with",
+              "value": "adi"
+            }
+          ]
+        },
+        {
+          "next": "initial_reply",
+          "event": "match",
+          "conditions": [
+            {
+              "friendly_name": "If value equal_to English",
+              "arguments": [
+                "{{widgets.after_ubicacion_confirmed.inbound.Body}}"
+              ],
+              "type": "starts_with",
+              "value": "English"
+            }
+          ]
+        }
+      ],
+      "properties": {
+        "input": "{{widgets.after_ubicacion_confirmed.inbound.Body}}",
+        "offset": {
+          "x": -760,
+          "y": 1150
+        }
+      }
+    },
+    {
+      "name": "regular_spanish_split_3",
+      "type": "split-based-on",
+      "transitions": [
+        {
+          "next": "gracias",
+          "event": "noMatch"
+        },
+        {
+          "next": "gracias",
+          "event": "match",
+          "conditions": [
+            {
+              "friendly_name": "If value equal_to ubicacion",
+              "arguments": [
+                "{{widgets.after_nombre_confirmed.inbound.Body}}"
+              ],
+              "type": "starts_with",
+              "value": "adi"
+            }
+          ]
+        },
+        {
+          "next": "initial_reply",
+          "event": "match",
+          "conditions": [
+            {
+              "friendly_name": "If value equal_to English",
+              "arguments": [
+                "{{widgets.after_nombre_confirmed.inbound.Body}}"
+              ],
+              "type": "starts_with",
+              "value": "English"
+            }
+          ]
+        }
+      ],
+      "properties": {
+        "input": "{{widgets.after_nombre_confirmed.inbound.Body}}",
+        "offset": {
+          "x": -540,
+          "y": 1990
+        }
+      }
+    }
+  ],
+  "initial_state": "Trigger",
+  "flags": {
+    "allow_concurrent_calls": true
+  }
+}
