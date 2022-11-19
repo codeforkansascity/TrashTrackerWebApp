@@ -1,52 +1,29 @@
-import { Authenticator } from "@aws-amplify/ui-react";
-import { Link } from "react-router-dom";
-import Home from "./Components/Home";
+import { React } from 'react';
+import { Authenticator, useAuthenticator } from "@aws-amplify/ui-react";
 import { View } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
-import Dropdown from "react-bootstrap/Dropdown";
+import Nav from "./Components/Nav";
+import Home from "./Components/Home";
 
-function App({ signOut }) {
+const App = () => {
+  // Make sure the useAuthenticator hook is only reevaluated when `user` changes; otherwise, it will rerender whenever a state changes 
+  const { user } = useAuthenticator((context) => [context.user]); 
+
+  // Make sure the Home component is not rendered when users sign out; otherwise, signout btn doesn't work properly
+  const { authStatus } = useAuthenticator(context => [context.authStatus]); 
+
   return (
-    <Authenticator
-      loginMechanisms={["email"]}
-      signUpAttributes={["name"]}
-      variation="modal"
-    >
-      {({ signOut }) => (
-        <View className="App">
-          <Dropdown>
-            <div className="navbar-container">
-              <nav className="navbar navbar-expand-lg">
-                <div className="container-fluid">
-                  <Link to="/" className="navbar-brand">Trash Tracker</Link>
-                  <Dropdown.Toggle id="dropdown-basic">
-                    User Menu
-                  </Dropdown.Toggle>
-
-                  <Dropdown.Menu>
-                    {/* <Dropdown.Item href="#/action-1">Add User</Dropdown.Item>
-
-                    <Dropdown.Item href="#/action-2">
-                      Update Email
-                    </Dropdown.Item>
-                    <Dropdown.Item href="#/action-3">
-                      Change Password
-                    </Dropdown.Item> */}
-
-                    <Dropdown.Item href="#" onClick={signOut}>
-                      Sign Out
-                    </Dropdown.Item>
-                  </Dropdown.Menu>
-                </div>
-              </nav>
-            </div>
-          </Dropdown>
-
-          <Home />
-        </View>
-      )}
-    </Authenticator>
+    <View className="App">
+      <Nav />
+      { authStatus !== 'authenticated' ? "" : <Home /> } 
+    </View>
   );
 }
 
-export default App;
+const AppWithAuthentication = () => (
+  <Authenticator.Provider>
+    <App />
+  </Authenticator.Provider>
+);
+
+export default AppWithAuthentication;

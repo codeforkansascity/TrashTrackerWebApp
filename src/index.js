@@ -1,15 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
+import App from "./App";
 // import Help from '../src/Components/Help';
 // import Admin from '../src/Components/Admin';
 // import Profile from '../src/Components/Profile';
+import reportWebVitals from "./reportWebVitals";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import "./index.css";
-import App from "./App";
-import reportWebVitals from "./reportWebVitals";
 import Amplify from "aws-amplify";
 import config from "./aws-exports";
 Amplify.configure(config);
