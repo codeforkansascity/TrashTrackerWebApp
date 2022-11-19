@@ -24,11 +24,33 @@ const DataEdit = () => {
   const updateTrashAndLocation = (e) => {
     for (let i=0; i<formData.length; i++) {
       if (e.target.id === formData[i].body) { // Filter the specific report where a trash report is edited
-        // Update the state of trash name, location, and PUT request options
-        formData[i].trash_name = document.getElementsByClassName("trash")[i].value;
-        formData[i].location = document.getElementsByClassName("location")[i].value;
-        formData[i].longitude = document.getElementsByClassName("longitude")[i].value;
-        formData[i].latitude = document.getElementsByClassName("latitude")[i].value;
+
+        // Validate if users cleared the trash name or location
+        let newName = document.getElementsByClassName("trash")[i].value;
+        let newLocation = document.getElementsByClassName("location")[i].value;
+        if ( !newName && !newLocation ) {
+          return alert("Sorry, please enter a description and an address for the trash item.")
+        } else if ( !newName ) {
+          return alert("Sorry, please enter a description for the trash item.")
+        } else if ( !newLocation ) {
+          return alert("Sorry, please enter an address for the trash item.")
+        }
+
+        // Validate if users only entered longitudes or latitudes
+        let newLongitude = document.getElementsByClassName("longitude")[i].value; 
+        let newLatitude = document.getElementsByClassName("latitude")[i].value; 
+        if ( newLongitude && !newLatitude ) {
+          return alert("Sorry, since you entered longitude, latitude field cannot be empty.")
+        } else if ( !newLongitude && newLatitude ) {
+          return alert("Sorry, since you entered latitude, longitude field cannot be empty.")
+        }
+
+        // Update the state of trash name, location, and POST request options
+        formData[i].trash_name = newName;
+        formData[i].location = newLocation;
+        formData[i].longitude = newLongitude;
+        formData[i].latitude = newLatitude;
+
         let requestOptions = {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -36,7 +58,7 @@ const DataEdit = () => {
           body: JSON.stringify(formData[i])
         };
 
-        // Send PUT request to DynamoDB
+        // Send editing request to DynamoDB
         fetch(putOrPostUrl, requestOptions)
           .then((response) => response.json())
           .then((data) => {

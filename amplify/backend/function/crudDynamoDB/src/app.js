@@ -236,32 +236,35 @@ app.post(path, function(req, res) {
     });
   }
 
-  if (address) {
-    params = {
-      "IndexName": "trashLocationSearch-staging",
-      "Text": address,
-      "BiasPosition": [-94.58316695554774,39.103642515847355],
-      "MaxResults": 5,
-    };
+  if (!req.body.latitude && !req.body.longitude) { // If users edit coordinates themselves, backend shouldn't calcuate coordinates
+    if (address) {
+      params = {
+        "IndexName": "trashLocationSearch-staging",
+        "Text": address,
+        "BiasPosition": [-94.58316695554774,39.103642515847355],
+        "MaxResults": 5,
+      };
 
-    amazonLocationService.searchPlaceIndexForText(params, function(err, data) {
-      if (err) {
-        console.log("PlaceIndexError || at app.js in lambda in backend" + JSON.stringify(err, undefined, 2))
-      } else {
-        // console.log(JSON.stringify(data, undefined, 2)); // Logging all search results from the "Text"
-        coordinates = data.Results[0].Place.Geometry.Point;    
-        const label = data.Results[0].Place.Label;    
-        if (coordinates) {
-          req.body = {...req.body, longitude: coordinates[0], latitude: coordinates[1]};
-          insertDataIntoDynamoDB();
+      amazonLocationService.searchPlaceIndexForText(params, function(err, data) {
+        if (err) {
+          console.log("PlaceIndexError || at app.js in lambda in backend" + JSON.stringify(err, undefined, 2))
         } else {
-          insertDataIntoDynamoDB();
+          // console.log(JSON.stringify(data, undefined, 2)); // Logging all search results from the "Text"
+          coordinates = data.Results[0].Place.Geometry.Point;    
+          const label = data.Results[0].Place.Label;    
+          if (coordinates) {
+            req.body = {...req.body, longitude: coordinates[0], latitude: coordinates[1]};
+            insertDataIntoDynamoDB();
+          } else {
+            insertDataIntoDynamoDB();
+          }
         }
-      }
-    })
-  } else {
-    insertDataIntoDynamoDB();
+      })
+    } else {
+      insertDataIntoDynamoDB();
+    }
   }
+
 });
 
 /************************************

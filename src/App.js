@@ -24,14 +24,14 @@ function App({ signOut }) {
                   </Dropdown.Toggle>
 
                   <Dropdown.Menu>
-                    <Dropdown.Item href="#/action-1">Add User</Dropdown.Item>
+                    {/* <Dropdown.Item href="#/action-1">Add User</Dropdown.Item>
 
                     <Dropdown.Item href="#/action-2">
                       Update Email
                     </Dropdown.Item>
                     <Dropdown.Item href="#/action-3">
                       Change Password
-                    </Dropdown.Item>
+                    </Dropdown.Item> */}
 
                     <Dropdown.Item href="#" onClick={signOut}>
                       Sign Out

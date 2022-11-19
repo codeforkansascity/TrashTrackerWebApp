@@ -156,7 +156,7 @@ const MapWithMarkerPopup = () => {
 
   return (
     <>
-      <MapView id="custom-map" initialViewState={{ latitude: 39.1002489, longitude: -94.5340805, zoom: 10 }}>
+      <MapView id="custom-map" initialViewState={{ latitude: 39.10282, longitude: -94.53513, zoom: 13 }}>
         <LocationSearch position="top-left" onChange={geocode} />
         {
           formData.map((element) => (
