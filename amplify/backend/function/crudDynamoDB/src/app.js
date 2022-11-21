@@ -247,7 +247,7 @@ app.post(path, function(req, res) {
 
       amazonLocationService.searchPlaceIndexForText(params, function(err, data) {
         if (err) {
-          console.log("PlaceIndexError || at app.js in lambda in backend" + JSON.stringify(err, undefined, 2))
+          console.log("searchPlaceIndexForTextError || at app.js in lambda in backend" + JSON.stringify(err, undefined, 2))
         } else {
           // console.log(JSON.stringify(data, undefined, 2)); // Logging all search results from the "Text"
           coordinates = data.Results[0].Place.Geometry.Point;    
@@ -266,6 +266,50 @@ app.post(path, function(req, res) {
   }
 
 });
+
+
+
+
+/************************************
+* HTTP post method for getting coordinates when users drag markers in the map
+*************************************/
+app.post(path + "/drag-to-edit", function(req, res) {
+  let amazonLocationService = new AWS.Location();
+  let params; // Parameters to be passed into Amazon Location Service 
+  params = {
+    "IndexName": "trashLocationSearch-staging",
+    "Position": [req.body.longitude, req.body.latitude],
+    "MaxResults": 2,
+  };
+
+  let putItemParams; // Parameters to be passed into DynamoDB (required for the POST request)
+  let insertDataIntoDynamoDB = () => { // Function that inserts data from req.body into DynamoDB
+    putItemParams = {
+      TableName: tableName,
+      Item: req.body,
+    };
+    dynamodb.put(putItemParams, (err, data) => {
+      if (err) {
+        res.statusCode = 500;
+        res.json({error: err, url: req.url, body: req.body});
+      } else {
+        res.json({success: 'post call succeed!', url: req.url, data: data})
+      }
+    });
+  }
+
+  amazonLocationService.searchPlaceIndexForPosition(params, function(err, data) {
+    if (err) {
+      console.log("searchPlaceIndexForPositionError || at app.js in lambda in backend" + JSON.stringify(err, undefined, 2))
+    } else {
+        insertDataIntoDynamoDB();
+    }
+  })
+
+});
+
+
+
 
 /************************************
 * HTTP post method for insert object * Usually used for getting coordinates when users search address in the map

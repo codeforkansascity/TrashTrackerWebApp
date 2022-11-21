@@ -3,6 +3,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Img } from "react-image";
+import customFetch from "./Fetch";
 import "./Datatable.css";
 import DefaultImage from "../assets/image-not-provided.svg";
 
@@ -59,16 +60,7 @@ const DataEdit = () => {
         };
 
         // Send editing request to DynamoDB
-        fetch(putOrPostUrl, requestOptions)
-          .then((response) => response.json())
-          .then((data) => {
-            console.log('Success:', data);
-            alert("Success! Please refresh the page to view your changes.")
-          })
-          .catch(error => {
-              console.error('Error:', error);
-              alert("Something went wrong! Please contact the administrator.")
-          });
+        customFetch(putOrPostUrl, requestOptions);
       }
     }
   };
@@ -86,16 +78,7 @@ const DataEdit = () => {
           body: JSON.stringify(formData[i])
         };
 
-    fetch(putOrPostUrl, requestOptions)
-      .then((response) => response.json())
-      .then((data) => {
-        console.log('Success:', data);
-        alert("Success! Please refresh the page to view your changes.")
-      })
-      .catch(error => {
-          console.error('Error:', error);
-          alert("Something went wrong! Please contact the administrator.")
-      });
+    customFetch(putOrPostUrl, requestOptions);
   }}}
 
   return (

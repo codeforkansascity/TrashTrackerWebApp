@@ -1,8 +1,9 @@
 import { React, useState, useEffect } from "react";
-import { MapView, LocationSearch, Heading, Text, Button } from "@aws-amplify/ui-react";
+import { MapView, LocationSearch, Heading, Text } from "@aws-amplify/ui-react";
 import { Marker, Popup } from 'react-map-gl';
 import "@aws-amplify/ui-react/styles.css";
 import "./Map.css";
+import customFetch from "./Fetch";
 
 // Map Display Style:
 // Streets style looks a bit dull;
@@ -12,6 +13,12 @@ import "./Map.css";
 
 // Reference: https://ui.docs.amplify.aws/react/connected-components/geo
 // See the section on Usage with react-map-gl
+
+
+const putOrPostUrl = "https://9gdq2gvn61.execute-api.us-east-2.amazonaws.com/staging/twilio";
+const dragToEditUrl = "https://9gdq2gvn61.execute-api.us-east-2.amazonaws.com/staging/twilio/drag-to-edit";
+const geocodeUrl = "https://9gdq2gvn61.execute-api.us-east-2.amazonaws.com/staging/twilio/geocode";
+
 
 const MarkerWithPopup = ({ latitude, longitude, heading, location, body, report_date, report_from, photo_url }) => {
   const [showPopup, setShowPopup] = useState(false);
@@ -24,36 +31,53 @@ const MarkerWithPopup = ({ latitude, longitude, heading, location, body, report_
     setShowPopup(true);
   };
 
-  // Add function that update formData and send PUT request to the database
+  // Update coordinates after users drag marker on the map 
+  const recordDraggedMarker = (e) => {
+    const draggedLongitudeLatitude = e.target.getLngLat();
+
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      'Access-Control-Allow-Origin': 'request-originating server addresses',
+      body: JSON.stringify({
+        trash_name: heading, 
+        location: location, 
+        body: body, 
+        report_date: report_date,
+        report_from: report_from,
+        photo_url: photo_url,
+        longitude: draggedLongitudeLatitude.lng,
+        latitude: draggedLongitudeLatitude.lat
+      })
+    };
+
+    // Send PUT request to DynamoDB
+    customFetch(dragToEditUrl, requestOptions);
+  }
+
+
+
+  // Update location and description after users edit them in marker popup
   const updateTrashAndLocation = (e) => {
     e.preventDefault();
-    const sendFetchRequest = () => {
-      const putOrPostUrl = "https://9gdq2gvn61.execute-api.us-east-2.amazonaws.com/staging/twilio";
-      let requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        'Access-Control-Allow-Origin': 'request-originating server addresses',
-        body: JSON.stringify({
-          trash_name: trash, 
-          location: address, 
-          body: e.target.id, 
-          report_date: report_date,
-          report_from: report_from,
-          photo_url: photo_url
-        })
-      };
-  
+
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      'Access-Control-Allow-Origin': 'request-originating server addresses',
+      body: JSON.stringify({
+        trash_name: trash, 
+        location: address, 
+        body: body, 
+        report_date: report_date,
+        report_from: report_from, // For dev, all non-coordinate data must be sent; e.g., if you don't send the data for "report_from", you are actually removing it from the database
+        photo_url: photo_url // This will result in error when Datatable.js fetch data from the database
+      })
+    };
+    
+    const sendFetchRequest = () => {  
       // Send PUT request to DynamoDB
-      fetch(putOrPostUrl, requestOptions)
-        .then((response) => response.json())
-        .then((data) => {
-          console.log('Success:', data);
-          alert("Success! Please refresh the page to view your changes.")
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert("Something went wrong! Please contact the administrator.")
-        });
+      customFetch(putOrPostUrl, requestOptions);
     }
 
     if (trash === "" || address === "") {
@@ -78,7 +102,10 @@ const MarkerWithPopup = ({ latitude, longitude, heading, location, body, report_
       <Marker
         latitude={latitude}
         longitude={longitude}
+        id={body}
+        draggable={true}
         onClick={handleMarkerClick}
+        onDragEnd={recordDraggedMarker}
       />
       {showPopup && (
         <Popup
@@ -107,7 +134,7 @@ const MarkerWithPopup = ({ latitude, longitude, heading, location, body, report_
   );
 }
 
-const MapWithMarkerPopup = () => {
+const Map = () => {
 
   const [formData, setFormData] = useState([]); 
 
@@ -121,13 +148,7 @@ const MapWithMarkerPopup = () => {
     .catch(err => console.error(err));
   },[])
 
-  const [{ latitude, longitude }, setMarkerLocation] = useState({
-    latitude: 39.1002489,
-    longitude: -94.4940805,
-  });
-
   const geocode = (e) => {
-    console.log("testing......." + e.value);
     // Send PUT request to get geo coordinates
     let requestOptions = {
       method: 'PUT',
@@ -136,7 +157,7 @@ const MapWithMarkerPopup = () => {
       body: JSON.stringify(e.value)
     };
 
-    fetch("https://9gdq2gvn61.execute-api.us-east-2.amazonaws.com/staging/twilio/geocode", requestOptions)
+    fetch(geocodeUrl, requestOptions)
       .then((response) => response.json())
       .then((data) => {
         const coordinates = data;
@@ -151,8 +172,6 @@ const MapWithMarkerPopup = () => {
           alert("Something went wrong! Please contact the administrator.")
       });
   }
-
-  const updateMarker = () => setMarkerLocation({ latitude: latitude + 0.03, longitude: longitude + 0.05 });
 
   return (
     <>
@@ -173,12 +192,10 @@ const MapWithMarkerPopup = () => {
               key={element.body} /> : ""
           )
         )}
-        {/* <Marker latitude={latitude} longitude={longitude} /> */}
       </MapView>
-      {/* <Button onClick={updateMarker}>Move Marker</Button> */}
       <div id="response"></div>
     </>
   );
 }
 
-export default MapWithMarkerPopup;
+export default Map;
