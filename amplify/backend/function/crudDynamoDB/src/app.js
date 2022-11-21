@@ -263,6 +263,8 @@ app.post(path, function(req, res) {
     } else {
       insertDataIntoDynamoDB();
     }
+  } else {
+    insertDataIntoDynamoDB();
   }
 
 });
