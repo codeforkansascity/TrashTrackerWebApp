@@ -248,12 +248,12 @@ app.post(path, function(req, res) {
         console.log("searchPlaceIndexForTextError || at app.js in lambda in backend" + JSON.stringify(err, undefined, 2))
       } else {
         // console.log(JSON.stringify(data, undefined, 2)); // Logging all search results from the "Text"
-        coordinates = data.Results[0].Place.Geometry.Point;    
-        const label = data.Results[0].Place.Label;    
-        if (coordinates) {
+        if (data.Results[0]) {
+          coordinates = data.Results[0].Place.Geometry.Point;  
           req.body = {...req.body, longitude: coordinates[0], latitude: coordinates[1]};
           insertDataIntoDynamoDB();
         } else {
+          req.body = {...req.body, longitude: -94.5064625500489, latitude: 39.109813276061004};
           insertDataIntoDynamoDB();
         }
       }
