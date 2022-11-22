@@ -37,20 +37,9 @@ const DataEdit = () => {
           return alert("Sorry, please enter an address for the trash item.")
         }
 
-        // Validate if users only entered longitudes or latitudes
-        let newLongitude = document.getElementsByClassName("longitude")[i].value; 
-        let newLatitude = document.getElementsByClassName("latitude")[i].value; 
-        if ( newLongitude && !newLatitude ) {
-          return alert("Sorry, since you entered longitude, latitude field cannot be empty.")
-        } else if ( !newLongitude && newLatitude ) {
-          return alert("Sorry, since you entered latitude, longitude field cannot be empty.")
-        }
-
         // Update the state of trash name, location, and POST request options
         formData[i].trash_name = newName;
         formData[i].location = newLocation;
-        formData[i].longitude = newLongitude;
-        formData[i].latitude = newLatitude;
 
         let requestOptions = {
           method: 'POST',
@@ -89,8 +78,6 @@ const DataEdit = () => {
             <th scope="col" className="thumb-col"></th>
             <th scope="col">Location</th>
             <th scope="col">Description</th>
-            <th scope="col">Longitude</th>
-            <th scope="col">Latitude</th>
             <th scope="col">Reported by</th>
             <th scope="col">Date</th>
             <th scope="col"></th>
@@ -113,12 +100,6 @@ const DataEdit = () => {
               </td>
               <td>
                 <textarea type="text" className="form-control trash" defaultValue={element.trash_name}></textarea>
-              </td>
-              <td className="cell-sm">
-                <input type="text" className="form-control longitude" defaultValue={element.longitude} />
-              </td>
-              <td className="cell-sm">
-                <input type="text" className="form-control latitude" defaultValue={element.latitude} />
               </td>
               <td>
                 {element.report_from.slice(2, 5) +

@@ -3,7 +3,7 @@ const customFetch = async (url, requestOptions) => {
     .then((response) => response.json())
     .then((data) => {
       console.log('Success:', data);
-      if (data.error) {
+      if ( data.error ) {
         alert(data.error.message + ". Please contact the administrator.")
       } else if ( data.success ) {
         alert("Success! Please refresh the page to view your changes.")

@@ -14,11 +14,9 @@ import customFetch from "./Fetch";
 // Reference: https://ui.docs.amplify.aws/react/connected-components/geo
 // See the section on Usage with react-map-gl
 
-
+const getUrl = "https://9gdq2gvn61.execute-api.us-east-2.amazonaws.com/staging/twilio/body";
 const putOrPostUrl = "https://9gdq2gvn61.execute-api.us-east-2.amazonaws.com/staging/twilio";
 const dragToEditUrl = "https://9gdq2gvn61.execute-api.us-east-2.amazonaws.com/staging/twilio/drag-to-edit";
-const geocodeUrl = "https://9gdq2gvn61.execute-api.us-east-2.amazonaws.com/staging/twilio/geocode";
-
 
 const MarkerWithPopup = ({ latitude, longitude, heading, location, body, report_date, report_from, photo_url }) => {
   const [showPopup, setShowPopup] = useState(false);
@@ -55,8 +53,6 @@ const MarkerWithPopup = ({ latitude, longitude, heading, location, body, report_
     customFetch(dragToEditUrl, requestOptions);
   }
 
-
-
   // Update location and description after users edit them in marker popup
   const updateTrashAndLocation = (e) => {
     e.preventDefault();
@@ -74,25 +70,13 @@ const MarkerWithPopup = ({ latitude, longitude, heading, location, body, report_
         photo_url: photo_url // This will result in error when Datatable.js fetch data from the database
       })
     };
-    
-    const sendFetchRequest = () => {  
-      // Send PUT request to DynamoDB
-      customFetch(putOrPostUrl, requestOptions);
-    }
 
     if (trash === "" || address === "") {
       alert("Trash name and location are required. Please fill out both input fields.")
     } else {
-      console.log(JSON.stringify({
-        trash_name: trash, 
-        location: address, 
-        body: e.target.id, 
-        report_date: report_date,
-        report_from: report_from,
-        photo_url: photo_url
-      }));
-      return sendFetchRequest()
+      return customFetch(putOrPostUrl, requestOptions);
     }
+
     setShowEdit(false); 
 
   };
@@ -135,10 +119,7 @@ const MarkerWithPopup = ({ latitude, longitude, heading, location, body, report_
 }
 
 const Map = () => {
-
   const [formData, setFormData] = useState([]); 
-
-  const getUrl = "https://9gdq2gvn61.execute-api.us-east-2.amazonaws.com/staging/twilio/body";
 
   // Fetch data for geo coordinates when the component is mounted
   useEffect(() => {
@@ -148,35 +129,10 @@ const Map = () => {
     .catch(err => console.error(err));
   },[])
 
-  const geocode = (e) => {
-    // Send PUT request to get geo coordinates
-    let requestOptions = {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      'Access-Control-Allow-Origin': 'request-originating server addresses',
-      body: JSON.stringify(e.value)
-    };
-
-    fetch(geocodeUrl, requestOptions)
-      .then((response) => response.json())
-      .then((data) => {
-        const coordinates = data;
-        // setMarkerLocation({
-        //   longitude: coordinates[0],
-        //   latitude: coordinates[1],                 
-        // });
-        console.log(coordinates);
-      })
-      .catch(error => {
-          console.error('Error:', error);
-          alert("Something went wrong! Please contact the administrator.")
-      });
-  }
-
   return (
     <>
       <MapView id="custom-map" initialViewState={{ latitude: 39.10282, longitude: -94.53513, zoom: 13 }}>
-        <LocationSearch position="top-left" onChange={geocode} />
+        <LocationSearch position="top-left" />
         {
           formData.map((element) => (
             element.latitude && element.longitude ? 
