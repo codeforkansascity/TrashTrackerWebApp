@@ -46,7 +46,7 @@ If you don't have an account, please create an account to access.
 
 - Missing aws-export.js (tip: try amplify init, check out [this guide](https://dzone.com/articles/a-complete-guide-for-integrating-aws-amplify-to-re))
 
-- If you're getting errors related to undefined Amplify or environment variables, check what environment you're in using: `amplify env list`
+- If you're getting errors related to undefined Amplify or environment variables, check what environment you're in: `amplify env list`
 
   - If in an env other than "staging", run: `amplify env checkout staging`
 
