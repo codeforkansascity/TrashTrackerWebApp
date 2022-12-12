@@ -19,7 +19,7 @@ const Datatable = () => {
     .then((res) => res.json())
     .then((reports) => setFormData(reports))
     .catch(err => console.error(err));
-  } /************  TO-DO: when filter is closed or users selected "select", return the complete list of report data ****************/
+  } 
 
   /********** Add methods to filter data by date ************/
   // Configure selectedDate to be used as fetch url query value
@@ -88,7 +88,7 @@ const Datatable = () => {
   const filterByCategory = (value) => {
     let selectedCategory = value;
     const filterCategory = (selectedCategory) => {
-      if (selectedCategory) {
+      if (selectedCategory !== "select") {
         const filterUrl = `https://9gdq2gvn61.execute-api.us-east-2.amazonaws.com/staging/twilio/filter_category?selectedCategory=${selectedCategory}`;
         return requestFilteredData(filterUrl);
       } else {
