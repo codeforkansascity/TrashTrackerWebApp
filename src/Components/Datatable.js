@@ -1,105 +1,107 @@
 import React, { useState, useEffect } from "react";
+import Filters from "./Filters";
 import { Img } from "react-image";
 import "./Datatable.css";
 import DefaultImage from "../assets/image-not-provided.svg";
 
 const Datatable = () => {
+  /********** Fetch data for report entries when the component is mounted ************/
   const [formData, setFormData] = useState([]); 
 
   const getUrl = "https://9gdq2gvn61.execute-api.us-east-2.amazonaws.com/staging/twilio/body";
 
   useEffect(() => {
     getUrlFetch()
-  },[]) // [] indicates that useEffect will only fire once when component is rendered (it won't rerender if state changes)
-  // If a state is put in [], useEffect only fires when that state changes
+  },[]) 
 
   const getUrlFetch = async () => {
-    // Fetch data for report entries when the component is mounted
     await fetch(getUrl)
     .then((res) => res.json())
     .then((reports) => setFormData(reports))
     .catch(err => console.error(err));
+  } /************  TO-DO: when filter is closed or users selected "select", return the complete list of report data ****************/
 
-    // Fetch filtered data for report entries when users use date filters
-    await filterReports();
-  }
-  
-  const filterReports = () => {
-    let e = document.getElementById("select");
+  /********** Add methods to filter data by date ************/
+  // Configure selectedDate to be used as fetch url query value
+  const configureSelectedDate = (value) => {
+    let selected = value;
+    let date = new Date();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+    let selectedDate = `${year}-${month}`;
+    switch(selected) {
+      case "0":
+        if (month < 10) {
+          return selectedDate = `${year}-0${month}`;
+        } else {
+          return selectedDate = `${year}-${month}`;
+        }
+      case "1":
+        if (month-1 < 10) {
+          return selectedDate = `${year}-0${month-1}`;
+        } else {
+          return selectedDate = `${year}-${month-1}`;
+        }
+      case "2":
+        if (month-2 < 10) {
+          return selectedDate = `${year}-0${month-2}`;
+        } else {
+          return selectedDate = `${year}-${month-2}`;
+        }
+      case "3":
+        if (month-3 < 10) {
+          return selectedDate = `${year}-0${month-3}`;
+        } else {
+          return selectedDate = `${year}-${month-3}`;
+        }
+      default:
+        return selectedDate = false;
+    }
+  };
 
-    const configureSelectedDate = () => {
-      // Configure selectedDate to be used as fetch url query value
-      let selected = e.options[e.selectedIndex].value;
-      let date = new Date();
-      let month = date.getMonth() + 1;
-      let year = date.getFullYear();
-      let selectedDate = `${year}-${month}`;
-      switch(selected) {
-        case "0":
-          if (month < 10) {
-            return selectedDate = `${year}-0${month}`;
-          } else {
-            return selectedDate = `${year}-${month}`;
-          }
-        case "1":
-          if (month-1 < 10) {
-            return selectedDate = `${year}-0${month-1}`;
-          } else {
-            return selectedDate = `${year}-${month-1}`;
-          }
-        case "2":
-          if (month-2 < 10) {
-            return selectedDate = `${year}-0${month-2}`;
-          } else {
-            return selectedDate = `${year}-${month-2}`;
-          }
-        case "3":
-          if (month-3 < 10) {
-            return selectedDate = `${year}-0${month-3}`;
-          } else {
-            return selectedDate = `${year}-${month-3}`;
-          }
-        default:
-          return selectedDate = false;
-      }
+  // Configure fetch request
+  const requestFilteredData = async (filterUrl) => {
+    await fetch(filterUrl)
+      .then((res) => res.json())
+      .then((reports) => setFormData(reports))
+      .catch(err => console.error(err));
+  };
+
+  // Fetch filtered data through new filter url
+  const filterDate = (selectedDate) => {
+    if (selectedDate) {
+      const filterUrl = `https://9gdq2gvn61.execute-api.us-east-2.amazonaws.com/staging/twilio/date?selectedDate=${selectedDate}`;
+      return requestFilteredData(filterUrl);
+    } else {
+      const filterUrl = "https://9gdq2gvn61.execute-api.us-east-2.amazonaws.com/staging/twilio/body";
+      return requestFilteredData(filterUrl);
     };
+  };
 
-    const requestFilteredData = async (filterUrl) => {
-      // Add fetch request
-      await fetch(filterUrl)
-        .then((res) => res.json())
-        .then((reports) => setFormData(reports))
-        .catch(err => console.error(err));
-    };
+  // Add a function to solicit the value of selectedDate from the child component <Filters /> when the value changes
+  const filterByDate = (value) => {
+    let selectedDate = configureSelectedDate(value);
+    filterDate(selectedDate);
+  };
 
-    const filterDate = () => {
-      // Fetch filtered data through new filter url
-      let selectedDate = configureSelectedDate();
-      if (selectedDate) {
-        const filterUrl = `https://9gdq2gvn61.execute-api.us-east-2.amazonaws.com/staging/twilio/date?selectedDate=${selectedDate}`;
+  /********** Add methods to filter data by category ************/
+  const filterByCategory = (value) => {
+    let selectedCategory = value;
+    const filterCategory = (selectedCategory) => {
+      if (selectedCategory) {
+        const filterUrl = `https://9gdq2gvn61.execute-api.us-east-2.amazonaws.com/staging/twilio/filter_category?selectedCategory=${selectedCategory}`;
         return requestFilteredData(filterUrl);
       } else {
         const filterUrl = "https://9gdq2gvn61.execute-api.us-east-2.amazonaws.com/staging/twilio/body";
         return requestFilteredData(filterUrl);
       };
     };
-      
-    // When users use date filters, start the function filterDate
-    e.addEventListener("change", filterDate);
-  }
+    filterCategory(selectedCategory);
+  };
 
   return (
     <div className="container">
-      <div className="col-6 mt-2 mb-5 mx-auto">
-        <label htmlFor="select" className="form-label">Date Filters</label>
-        <select className="form-select form-select-lg mb-3" id="select" defaultValue="false" aria-label=".form-select-lg example">
-          <option value="false">All Months</option>
-          <option value="0">Current Month</option>
-          <option value="1">1 Month Ago</option>
-          <option value="2">2 Months Ago</option>
-          <option value="3">3 Months Ago</option>
-        </select>
-      </div>
+      <Filters filterByDate={filterByDate} filterByCategory={filterByCategory} />
       <table className="table table-borderless">
         <thead>
           <tr>

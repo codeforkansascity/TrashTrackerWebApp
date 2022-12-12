@@ -107,7 +107,7 @@ app.get(path + hashKeyPath, function(req, res) {
 });
 
 /********************************
- * HTTP Get method for list objects in a date range * e.g., /twilio/date
+ * HTTP Get method for filter objects in a date range * e.g., /twilio/date
  ********************************/
 
 app.get(path + customKeyPath, function(req, res) {
@@ -121,6 +121,35 @@ app.get(path + customKeyPath, function(req, res) {
     },
     ExpressionAttributeValues: {
       ":date": selectedDate,
+      ':status':"completed"
+    }
+  }
+
+  dynamodb.scan(queryParams, (err, data) => {
+    if (err) {
+      res.statusCode = 500;
+      res.json({error: 'Could not load items: ' + err});
+    } else {
+      res.json(data.Items);
+    }
+  })
+})
+
+/********************************
+ * HTTP Get method for filter objects in a category * e.g., /twilio/filter_category
+ ********************************/
+
+app.get(path + "/filter_category", function(req, res) {
+  const selectedCategory = req.query.selectedCategory;
+  let queryParams = {
+    TableName: tableName,
+    FilterExpression: "begins_with(#category, :category) AND #status <> :status",
+    ExpressionAttributeNames: {
+      "#category":"category",
+      "#status":"status"
+    },
+    ExpressionAttributeValues: {
+      ":category": selectedCategory,
       ':status':"completed"
     }
   }

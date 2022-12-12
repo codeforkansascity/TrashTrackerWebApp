@@ -1,9 +1,7 @@
 import React, {useState} from "react";
-// import Datafilter from "./Datafilter";
 import Datatable from "./Datatable";
 import DataEdit from "./DataEdit";
 import Footer from "./Footer";
-// import PrintMap from './PrintMap';
 import Map from "./Map";
 import PrintReportBtn from "../assets/print-icon.svg";
 
@@ -24,14 +22,16 @@ const Home = () => {
       </div>
       <Map />
 
-      <p className="report-status entries-title">
-        Received Entries
-        <button className="btn btn-sm btn-warning ms-4" onClick={() => editMode ? setEditMode(false) : setEditMode(true)}>
-          {editMode ? "Go Back" : "Edit"}
-        </button>
-      </p>
-
-      {/* <Datafilter /> */}
+      <div className="d-flex flex-wrap justify-content-between">
+        <div>
+          <p className="report-status entries-title">
+            Received Entries
+            <button className="btn btn-sm btn-warning ms-4" onClick={() => editMode ? setEditMode(false) : setEditMode(true)}>
+              {editMode ? "Go Back" : "Edit"}
+            </button>
+          </p>
+        </div>
+      </div>
 
       {/* Display data upon loading the page; show edit areas when users clicked on Edit button */}
       {
@@ -40,7 +40,7 @@ const Home = () => {
         :
         <Datatable />        
       }
-      {/* <PrintMap /> */}
+      
       <Footer />
     </div>
   );
