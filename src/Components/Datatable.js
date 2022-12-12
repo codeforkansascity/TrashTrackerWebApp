@@ -108,7 +108,7 @@ const Datatable = () => {
             <th scope="col">Description</th>
             <th scope="col">Reported by</th>
             <th scope="col">Date</th>
-            <th scope="col">Status</th>
+            <th scope="col">Category</th>
           </tr>
         </thead>
         <tbody id="data-table">
@@ -141,7 +141,9 @@ const Datatable = () => {
                 </td>
                 <td>{element.report_date.slice(0, 10)}</td>
                 <td>
-                  <button className="btn-status">New</button>
+                  <button className="btn-status">
+                    {element.category ? element.category : "New"}
+                  </button>
                 </td>
               </tr>
             )) 
