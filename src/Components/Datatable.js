@@ -80,8 +80,12 @@ const Datatable = () => {
 
   // Add a function to solicit the value of selectedDate from the child component <Filters /> when the value changes
   const filterByDate = (value) => {
-    let selectedDate = configureSelectedDate(value);
-    filterDate(selectedDate);
+    if (value === "close") { // For convenience, here is added a method to clear the filter effect when users click on "Close" for filters
+      getUrlFetch();
+    } else {
+      let selectedDate = configureSelectedDate(value);
+      filterDate(selectedDate);
+    }
   };
 
   /********** Add methods to filter data by category ************/
