@@ -13,7 +13,7 @@
     "axios": "^0.32.0",
     "bootstrap": "^5.2.1",
     "maplibre-gl": "^2.4.0",
-    "maplibre-gl-js-amplify": "^2.0.4",
+    "maplibre-gl-js-amplify": "^4.0.3",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-axios": "^2.0.6",
